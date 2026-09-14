@@ -1,0 +1,23 @@
+# Secretos
+.env
+
+# Material de lectura del curso (contenido propietario de CoderHouse)
+materiales/
+
+# Entornos virtuales
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Editores / SO
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
