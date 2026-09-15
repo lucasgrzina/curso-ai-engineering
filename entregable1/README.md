@@ -56,9 +56,10 @@ el script detecta qué proveedores tienen credenciales y prueba sólo esos.
 | `ANTHROPIC_EFFORT` | no | `low` | Profundidad del razonamiento: `low`…`max` |
 | `GEMINI_API_KEY` | sí, para Gemini | — | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (tier gratuito) |
 | `GEMINI_MODEL` | no | `gemini-3.6-flash` | Modelo de Gemini |
+| `GEMINI_EFFORT` | no | — | Razonamiento: `none`…`high` (ver §5) |
 | `GEMINI_BASE_URL` | no | capa OpenAI de Google | Endpoint alternativo |
 | `LLM_TEMPERATURE` | no | `0.7` | 0 a 2 (Anthropic acepta hasta 1) |
-| `LLM_MAX_TOKENS` | no | `1024` | Techo de tokens de salida, > 0 |
+| `LLM_MAX_TOKENS` | no | `2048` | Techo de salida; incluye los tokens de razonamiento |
 | `LLM_TIMEOUT_S` | no | `30` | Timeout **por intento** |
 | `LLM_MAX_RETRIES` | no | `2` | Reintentos ante 429 / 5xx / red |
 
@@ -141,6 +142,15 @@ sola, la de `BaseLLMClient`, y no dos backoffs superpuestos sobre el mismo fallo
   modelos que no los aceptan y los inyecta vía `extra_body` en los que sí
   (Haiku 4.5, Sonnet 4.6, …).
 
+* **En los modelos de razonamiento, el *thinking* sale de `max_tokens`.**
+  `gemini-3.6-flash` razona antes de responder, y esos tokens consumen el
+  mismo presupuesto. Con `max_tokens=512` la respuesta vuelve cortada
+  (`finish_reason="length"`) aunque el texto visible tenga 19 tokens: parece
+  un bug del cliente y es el techo. Por eso el default subió a 2048, y
+  `GEMINI_EFFORT=none` permite apagar el razonamiento y entrar en
+  presupuestos chicos. `ModelConfig` valida los valores por proveedor:
+  Anthropic acepta `low`…`max`, Gemini `none`…`high`.
+
 * **Gemini contesta 400 donde los otros contestan 401.** Una clave inválida
   vuelve como `400 INVALID_ARGUMENT` con el texto *«Please pass a valid API
   key»*. Tal cual, el usuario leería `bad_request` y buscaría el problema en
@@ -188,11 +198,18 @@ OPENAI_API_KEY=<clave de Groq>
 `python verificar.py` cubre 28 criterios (validación, herencia, asincronía,
 streaming, reintentos y clasificación de errores) y pasa completo.
 
-La ruta real de red está probada con claves inválidas a propósito contra los
-tres proveedores: OpenAI y Anthropic devuelven un 401 auténtico y Gemini un
-400, y el cliente clasifica los tres como `auth` en modo normal y en
-streaming, con el proceso terminando en código 0. Una corrida exitosa de punta
-a punta requiere claves válidas.
+La ruta real de red está probada de las dos maneras:
+
+* **Corrida exitosa punta a punta** con claves de tier gratuito — Gemini
+  (`gemini-3.6-flash`) y Groq vía `OPENAI_BASE_URL` (`openai/gpt-oss-20b`) —
+  en modo normal y en streaming, las dos respuestas completas con
+  `finish_reason="stop"`. En una de esas corridas Gemini devolvió un 503 por
+  saturación antes del primer token y el reintento se recuperó solo, que es
+  exactamente el caso para el que existe la política.
+* **Fallos forzados** con claves inválidas a propósito contra los tres
+  proveedores: OpenAI y Anthropic devuelven un 401 auténtico y Gemini un 400,
+  y el cliente clasifica los tres como `auth` en modo normal y en streaming,
+  con el proceso terminando en código 0.
 
 Versiones con las que se probó: `anthropic` 1.5.0, `openai` 3.14.0,
 `pydantic` 2.13.5, CPython 3.12.14.

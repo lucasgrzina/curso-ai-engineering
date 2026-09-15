@@ -92,6 +92,11 @@ async def demo_error_controlado(provider: Provider) -> None:
     """Una key inválida no debe tirar abajo el programa."""
     titulo("Manejo de errores: API key inválida")
 
+    # El fallo se imprime más abajo como resultado; el log lo duplicaría.
+    logger_cliente = logging.getLogger("llm_client")
+    nivel_previo = logger_cliente.level
+    logger_cliente.setLevel(logging.CRITICAL)
+
     config = ModelConfig(
         provider=provider,
         model=AsyncLLMManager.from_env(provider).config.model,

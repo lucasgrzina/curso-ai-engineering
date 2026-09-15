@@ -115,13 +115,18 @@ class AsyncLLMManager:
         resolved = Provider(str(raw_provider).lower())
 
         model = _env_str(f"{resolved.upper()}_MODEL") or DEFAULT_MODELS[resolved]
-        effort = _env_str("ANTHROPIC_EFFORT") if resolved is Provider.ANTHROPIC else None
+        # Cada proveedor nombra su variable, pero la config la unifica.
+        effort = (
+            _env_str(f"{resolved.upper()}_EFFORT")
+            if resolved is not Provider.OPENAI
+            else None
+        )
 
         config = ModelConfig(
             provider=resolved,
             model=model,
             temperature=_env_float("LLM_TEMPERATURE", 0.7),
-            max_tokens=_env_int("LLM_MAX_TOKENS", 1024),
+            max_tokens=_env_int("LLM_MAX_TOKENS", 2048),
             timeout_s=_env_float("LLM_TIMEOUT_S", 30.0),
             max_retries=_env_int("LLM_MAX_RETRIES", 2),
             effort=effort,

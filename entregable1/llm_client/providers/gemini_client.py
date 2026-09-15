@@ -15,7 +15,10 @@ que es exactamente lo que la clase base deja abierto.
 
 from __future__ import annotations
 
-from ..schemas import ModelConfig
+from collections.abc import Sequence
+from typing import Any
+
+from ..schemas import ChatMessage, ModelConfig
 from .openai_client import OpenAIClient
 
 # Capa de compatibilidad OpenAI de Google AI Studio.
@@ -31,3 +34,17 @@ class GeminiClient(OpenAIClient):
 
     def __init__(self, config: ModelConfig, api_key: str, base_url: str | None = None):
         super().__init__(config, api_key, base_url or GEMINI_BASE_URL)
+
+    def _payload(self, messages: Sequence[ChatMessage]) -> dict[str, Any]:
+        """Agrega el control de razonamiento, que Gemini llama distinto.
+
+        Los modelos Gemini 3 razonan antes de responder y esos tokens salen
+        del mismo presupuesto que `max_tokens`: con un techo bajo la respuesta
+        llega cortada (`finish_reason="length"`) aunque el texto visible sea
+        mínimo. `reasoning_effort="none"` desactiva el razonamiento; subir
+        `max_tokens` es la otra salida.
+        """
+        payload = super()._payload(messages)
+        if self.config.effort:
+            payload["extra_body"] = {"reasoning_effort": self.config.effort}
+        return payload

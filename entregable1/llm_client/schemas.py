@@ -88,15 +88,18 @@ class ModelConfig(BaseModel):
     model: str = Field(min_length=1)
 
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
-    max_tokens: int = Field(default=1024, gt=0, le=32_000)
+    max_tokens: int = Field(default=2048, gt=0, le=32_000)
     top_p: float | None = Field(default=None, gt=0.0, le=1.0)
 
     # Presupuesto de tiempo por intento y política de reintentos propia.
     timeout_s: float = Field(default=30.0, gt=0.0, le=600.0)
     max_retries: int = Field(default=2, ge=0, le=5)
 
-    # Sólo Anthropic: controla la profundidad del razonamiento adaptativo.
-    effort: str | None = Field(default=None, pattern=r"^(low|medium|high|xhigh|max)$")
+    # Profundidad del razonamiento. Anthropic: low..max. Gemini: none..high
+    # (lo mapea a `reasoning_effort`). OpenAI no lo expone en esta interfaz.
+    effort: str | None = Field(
+        default=None, pattern=r"^(none|low|medium|high|xhigh|max)$"
+    )
 
     @model_validator(mode="after")
     def _check_provider_limits(self) -> "ModelConfig":
@@ -105,8 +108,21 @@ class ModelConfig(BaseModel):
                 "Anthropic acepta temperature en 0..1; "
                 f"se recibió {self.temperature}."
             )
-        if self.provider is not Provider.ANTHROPIC and self.effort is not None:
-            raise ValueError("`effort` es un parámetro exclusivo de Anthropic.")
+        if self.effort is not None:
+            permitidos = {
+                Provider.ANTHROPIC: {"low", "medium", "high", "xhigh", "max"},
+                Provider.GEMINI: {"none", "low", "medium", "high"},
+            }.get(self.provider)
+            if permitidos is None:
+                raise ValueError(
+                    "`effort` sólo se soporta en Anthropic y Gemini, "
+                    f"no en {self.provider}."
+                )
+            if self.effort not in permitidos:
+                raise ValueError(
+                    f"`effort={self.effort}` no es válido para {self.provider}; "
+                    f"opciones: {', '.join(sorted(permitidos))}."
+                )
         return self
 
 
