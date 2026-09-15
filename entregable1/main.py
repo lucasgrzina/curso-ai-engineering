@@ -116,8 +116,8 @@ async def main() -> int:
     if not proveedores:
         print(
             "No hay ninguna API key configurada.\n"
-            "Copiá .env.example a .env y completá OPENAI_API_KEY "
-            "y/o ANTHROPIC_API_KEY.",
+            "Copiá .env.example a .env y completá al menos una de "
+            "OPENAI_API_KEY, ANTHROPIC_API_KEY o GEMINI_API_KEY.",
             file=sys.stderr,
         )
         return 1

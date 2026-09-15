@@ -47,6 +47,12 @@ def _kind_from_status(status: int | None) -> ErrorKind | None:
     return None
 
 
+def _looks_like_bad_key(message: str) -> bool:
+    """Detecta un 400 que en realidad es un problema de credenciales."""
+    bajo = message.lower()
+    return "api key" in bajo or "api_key" in bajo
+
+
 def classify(exc: BaseException, provider: Provider, attempts: int = 1) -> LLMError:
     """Convierte cualquier excepción en un `LLMError` estructurado."""
     status = getattr(exc, "status_code", None)
@@ -71,6 +77,13 @@ def classify(exc: BaseException, provider: Provider, attempts: int = 1) -> LLMEr
         kind = ErrorKind.UNKNOWN
 
     message = str(exc).strip() or type(exc).__name__
+
+    # Gemini devuelve 400 INVALID_ARGUMENT para una clave inválida, no 401.
+    # Sin este ajuste el usuario vería "bad_request" y buscaría el problema en
+    # los parámetros en vez de en su .env.
+    if kind is ErrorKind.BAD_REQUEST and _looks_like_bad_key(message):
+        kind = ErrorKind.AUTH
+
     return LLMError(
         kind=kind,
         message=message,

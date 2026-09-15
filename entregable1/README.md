@@ -2,10 +2,10 @@
 
 Módulo 1 — *La interfaz base: conexión y abstracción de LLMs*.
 
-Cliente unificado en **Python 3.12** que expone OpenAI y Anthropic detrás de
-una misma interfaz asíncrona, con validación Pydantic en la frontera,
-streaming token a token y errores capturados como dato en vez de excepciones
-que rompan el proceso.
+Cliente unificado en **Python 3.12** que expone OpenAI, Anthropic y Gemini
+detrás de una misma interfaz asíncrona, con validación Pydantic en la
+frontera, streaming token a token y errores capturados como dato en vez de
+excepciones que rompan el proceso.
 
 ```python
 from llm_client import AsyncLLMManager
@@ -18,8 +18,8 @@ async with AsyncLLMManager.from_env() as llm:          # proveedor desde .env
         print(chunk.delta, end="", flush=True)
 ```
 
-Cambiar de proveedor es cambiar `LLM_PROVIDER=openai` por `anthropic`: no hay
-una sola línea de código de aplicación que dependa del SDK.
+Cambiar de proveedor es cambiar `LLM_PROVIDER=openai` por `anthropic` o
+`gemini`: no hay una sola línea de código de aplicación que dependa del SDK.
 
 ---
 
@@ -42,18 +42,21 @@ Sin `uv`, el equivalente es `python -m venv .venv` y
 ## 2. Variables de entorno
 
 Todas viven en `.env` (ignorado por git); el ejemplo completo está en
-`.env.example`. Alcanza con **una** de las dos claves para que `main.py` corra:
+`.env.example`. Alcanza con **una** de las tres claves para que `main.py` corra:
 el script detecta qué proveedores tienen credenciales y prueba sólo esos.
 
 | Variable | Obligatoria | Default | Para qué sirve |
 |---|---|---|---|
-| `LLM_PROVIDER` | no | `openai` | Proveedor por defecto: `openai` o `anthropic` |
+| `LLM_PROVIDER` | no | `openai` | Proveedor: `openai`, `anthropic` o `gemini` |
 | `OPENAI_API_KEY` | sí, para OpenAI | — | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | `OPENAI_MODEL` | no | `gpt-4o-mini` | Modelo de OpenAI |
 | `OPENAI_BASE_URL` | no | — | Endpoint alternativo compatible con OpenAI (ver §6) |
 | `ANTHROPIC_API_KEY` | sí, para Anthropic | — | [console.anthropic.com](https://console.anthropic.com/settings/keys) |
 | `ANTHROPIC_MODEL` | no | `claude-opus-5` | Modelo de Anthropic |
 | `ANTHROPIC_EFFORT` | no | `low` | Profundidad del razonamiento: `low`…`max` |
+| `GEMINI_API_KEY` | sí, para Gemini | — | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (tier gratuito) |
+| `GEMINI_MODEL` | no | `gemini-3.6-flash` | Modelo de Gemini |
+| `GEMINI_BASE_URL` | no | capa OpenAI de Google | Endpoint alternativo |
 | `LLM_TEMPERATURE` | no | `0.7` | 0 a 2 (Anthropic acepta hasta 1) |
 | `LLM_MAX_TOKENS` | no | `1024` | Techo de tokens de salida, > 0 |
 | `LLM_TIMEOUT_S` | no | `30` | Timeout **por intento** |
@@ -89,7 +92,8 @@ entregable1/
     ├── manager.py           # AsyncLLMManager: elige proveedor por config
     └── providers/
         ├── openai_client.py     # AsyncOpenAI
-        └── anthropic_client.py  # AsyncAnthropic
+        ├── anthropic_client.py  # AsyncAnthropic
+        └── gemini_client.py     # Gemini vía la capa compatible con OpenAI
 ```
 
 **`schemas.py` primero.** Toda la frontera del sistema pasa por modelos
@@ -101,7 +105,8 @@ que no acepta más.
 **La base concentra lo que no depende del SDK.** `BaseLLMClient` mide latencia,
 aplica reintentos y captura errores; cada proveedor sólo implementa
 `_raw_generate` y `_raw_stream`, que pueden lanzar excepciones con total
-libertad. Agregar un tercer proveedor es escribir esos dos métodos.
+libertad. Agregar un proveedor nuevo es escribir esos dos métodos — y si el
+proveedor ya habla el protocolo de OpenAI, ni siquiera eso (ver §6).
 
 **Los errores son datos, no excepciones.** `generate()` devuelve siempre un
 `ModelResponse`: si `ok` es `False`, `error` trae un `LLMError` con categoría
@@ -121,7 +126,7 @@ respuesta.
 Los reintentos del SDK van en `max_retries=0` a propósito: la política es una
 sola, la de `BaseLLMClient`, y no dos backoffs superpuestos sobre el mismo fallo.
 
-## 5. Dos diferencias entre proveedores que el cliente absorbe
+## 5. Diferencias entre proveedores que el cliente absorbe
 
 * **El prompt de sistema.** En OpenAI es un mensaje más; en Anthropic va en el
   parámetro `system`. `AnthropicClient` separa los turnos `system` del
@@ -136,14 +141,31 @@ sola, la de `BaseLLMClient`, y no dos backoffs superpuestos sobre el mismo fallo
   modelos que no los aceptan y los inyecta vía `extra_body` en los que sí
   (Haiku 4.5, Sonnet 4.6, …).
 
+* **Gemini contesta 400 donde los otros contestan 401.** Una clave inválida
+  vuelve como `400 INVALID_ARGUMENT` con el texto *«Please pass a valid API
+  key»*. Tal cual, el usuario leería `bad_request` y buscaría el problema en
+  los parámetros; el clasificador detecta ese caso y lo reetiqueta como `auth`.
+
 En la misma línea, `OpenAIClient` reintenta con `max_completion_tokens` cuando
 el modelo destino rechaza `max_tokens`, que es lo que pasa con las familias
 o-\* y GPT-5.
 
-## 6. Endpoints compatibles con OpenAI
+## 6. Gemini y otros endpoints compatibles con OpenAI
 
-`OPENAI_BASE_URL` permite apuntar el `AsyncOpenAI` a cualquier API compatible
-sin tocar código — útil para probar el entregable con un tier gratuito:
+Google expone los modelos Gemini en un endpoint que habla el mismo protocolo
+que la API de Chat Completions de OpenAI. Por eso `GeminiClient` **hereda de
+`OpenAIClient`** y sólo cambia la URL base: no agrega ninguna dependencia y
+son cuatro líneas de configuración en vez de una implementación paralela. Es
+la prueba de que la abstracción paga.
+
+El precio de esa decisión, que conviene tener presente: las funciones propias
+de Gemini sin equivalente en el protocolo de OpenAI (`thinking_config`, las
+`safety_settings` granulares) no quedan expuestas. Para eso haría falta el SDK
+`google-genai` e implementar `_raw_generate` / `_raw_stream` directamente —
+que es exactamente lo que la clase base deja abierto.
+
+El mismo mecanismo sirve para cualquier otra API compatible. `OPENAI_BASE_URL`
+apunta el `AsyncOpenAI` a donde haga falta, sin tocar código:
 
 ```bash
 OPENAI_BASE_URL=https://api.groq.com/openai/v1
@@ -163,13 +185,14 @@ OPENAI_API_KEY=<clave de Groq>
 
 ## 8. Estado de la verificación
 
-`python verificar.py` cubre 26 criterios (validación, herencia, asincronía,
+`python verificar.py` cubre 28 criterios (validación, herencia, asincronía,
 streaming, reintentos y clasificación de errores) y pasa completo.
 
-La ruta real de red está probada con claves inválidas a propósito contra ambos
-proveedores: los dos devuelven un 401 auténtico que el cliente clasifica como
-`auth` en modo normal y en streaming, y el proceso termina con código 0.
-Una corrida exitosa de punta a punta requiere claves válidas.
+La ruta real de red está probada con claves inválidas a propósito contra los
+tres proveedores: OpenAI y Anthropic devuelven un 401 auténtico y Gemini un
+400, y el cliente clasifica los tres como `auth` en modo normal y en
+streaming, con el proceso terminando en código 0. Una corrida exitosa de punta
+a punta requiere claves válidas.
 
 Versiones con las que se probó: `anthropic` 1.5.0, `openai` 3.14.0,
 `pydantic` 2.13.5, CPython 3.12.14.

@@ -23,6 +23,7 @@ class Provider(StrEnum):
 
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
+    GEMINI = "gemini"
 
 
 class Role(StrEnum):
@@ -104,7 +105,7 @@ class ModelConfig(BaseModel):
                 "Anthropic acepta temperature en 0..1; "
                 f"se recibió {self.temperature}."
             )
-        if self.provider is Provider.OPENAI and self.effort is not None:
+        if self.provider is not Provider.ANTHROPIC and self.effort is not None:
             raise ValueError("`effort` es un parámetro exclusivo de Anthropic.")
         return self
 

@@ -21,16 +21,19 @@ load_dotenv()
 DEFAULT_MODELS: dict[Provider, str] = {
     Provider.OPENAI: "gpt-4o-mini",
     Provider.ANTHROPIC: "claude-opus-5",
+    Provider.GEMINI: "gemini-3.6-flash",
 }
 
 _API_KEY_VARS: dict[Provider, str] = {
     Provider.OPENAI: "OPENAI_API_KEY",
     Provider.ANTHROPIC: "ANTHROPIC_API_KEY",
+    Provider.GEMINI: "GEMINI_API_KEY",
 }
 
 _BASE_URL_VARS: dict[Provider, str] = {
     Provider.OPENAI: "OPENAI_BASE_URL",
     Provider.ANTHROPIC: "ANTHROPIC_BASE_URL",
+    Provider.GEMINI: "GEMINI_BASE_URL",
 }
 
 
@@ -75,6 +78,10 @@ class AsyncLLMManager:
             from .providers.openai_client import OpenAIClient
 
             return OpenAIClient
+        if provider is Provider.GEMINI:
+            from .providers.gemini_client import GeminiClient
+
+            return GeminiClient
         from .providers.anthropic_client import AnthropicClient
 
         return AnthropicClient

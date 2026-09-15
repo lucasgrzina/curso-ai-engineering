@@ -13,7 +13,7 @@ from typing import Any
 from openai import AsyncOpenAI
 
 from ..base import BaseLLMClient
-from ..schemas import ChatMessage, ModelConfig, ModelResponse, Provider, Usage
+from ..schemas import ChatMessage, ModelConfig, ModelResponse, Usage
 
 
 class OpenAIClient(BaseLLMClient):
@@ -68,7 +68,7 @@ class OpenAIClient(BaseLLMClient):
         choice = completion.choices[0]
         usage = completion.usage
         return ModelResponse(
-            provider=Provider.OPENAI,
+            provider=self.config.provider,
             model=completion.model or self.config.model,
             content=choice.message.content or "",
             finish_reason=choice.finish_reason,

@@ -28,7 +28,7 @@ from llm_client import (
     Role,
     Usage,
 )
-from llm_client.providers import AnthropicClient, OpenAIClient
+from llm_client.providers import AnthropicClient, GeminiClient, OpenAIClient
 
 
 def _consola_utf8() -> None:
@@ -64,13 +64,17 @@ def seccion(texto: str) -> None:
 # ---------------------------------------------------------------------------
 
 
-class ErrorFalso(Exception):
-    """Imita un error del SDK: la clasificación mira el nombre de la clase."""
+def ErrorFalso(
+    nombre: str, status: int | None = None, mensaje: str | None = None
+) -> Exception:
+    """Fabrica una excepción que imita la de un SDK.
 
-    def __init__(self, nombre: str, status: int | None = None):
-        super().__init__(f"fallo simulado ({nombre})")
-        type(self).__name__ = nombre
-        self.status_code = status
+    La clasificación mira el nombre de la clase, así que se crea un tipo nuevo
+    en cada llamada en vez de renombrar uno compartido.
+    """
+    excepcion = type(nombre, (Exception,), {})(mensaje or f"fallo simulado ({nombre})")
+    excepcion.status_code = status  # type: ignore[attr-defined]
+    return excepcion
 
 
 class ClienteFalso(BaseLLMClient):
@@ -162,9 +166,11 @@ def verificar_estructura() -> None:
     seccion("2. Interfaz común e intercambiabilidad")
 
     check(
-        "OpenAIClient y AnthropicClient heredan de BaseLLMClient",
-        issubclass(OpenAIClient, BaseLLMClient)
-        and issubclass(AnthropicClient, BaseLLMClient),
+        "los tres clientes heredan de BaseLLMClient",
+        all(
+            issubclass(c, BaseLLMClient)
+            for c in (OpenAIClient, AnthropicClient, GeminiClient)
+        ),
     )
     check("BaseLLMClient es abstracta", inspect.isabstract(BaseLLMClient))
     check(
@@ -177,9 +183,13 @@ def verificar_estructura() -> None:
         and inspect.isasyncgenfunction(AsyncLLMManager.stream),
     )
     check(
-        "el manager conoce ambos proveedores",
+        "el manager resuelve los tres proveedores",
         {AsyncLLMManager._client_class(p) for p in Provider}
-        == {OpenAIClient, AnthropicClient},
+        == {OpenAIClient, AnthropicClient, GeminiClient},
+    )
+    check(
+        "Gemini reusa el protocolo de OpenAI apuntando a otro endpoint",
+        issubclass(GeminiClient, OpenAIClient),
     )
 
 
@@ -244,6 +254,21 @@ async def verificar_errores() -> None:
             and respuesta.error.retryable is reintentable,
             f"clasificado como {respuesta.error.kind}",
         )
+
+    # Gemini manda 400 (no 401) cuando la clave es inválida: debe reclasificarse
+    # como `auth`, o el usuario buscaría el error en los parámetros.
+    cliente = ClienteFalso(
+        sin_reintentos,
+        fallos_previos=99,
+        error=ErrorFalso("BadRequestError", 400, "Please pass a valid API key"),
+    )
+    respuesta = await cliente.generate(MENSAJES)
+    assert respuesta.error is not None
+    check(
+        "un 400 por clave inválida (Gemini) se reclasifica como auth",
+        respuesta.error.kind is ErrorKind.AUTH and not respuesta.error.retryable,
+        f"clasificado como {respuesta.error.kind}",
+    )
 
     # El mismo fallo en streaming llega como chunk, no como excepción.
     cliente = ClienteFalso(
