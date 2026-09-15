@@ -14,7 +14,7 @@ verificación.
 
 | # | Módulo | Tema | Estado |
 |---|---|---|---|
-| 1 | Módulo 1 · La interfaz base | Por definir | ⏳ Pendiente |
+| [1](./entregable1) | Módulo 1 · La interfaz base | Cliente de LLM robusto y asíncrono: OpenAI + Anthropic tras una interfaz común, Pydantic, streaming | ✅ Completo |
 | 2 | Módulo 2 · Encadenamiento lógico | Pipeline de procesamiento validado (LangChain / LCEL) | ⏳ Pendiente |
 | 3 | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG) | ⏳ Pendiente |
 | 4 | Módulo 4 · Escalabilidad documental | RAG en la nube con Pinecone | ⏳ Pendiente |
@@ -40,6 +40,23 @@ python verificar.py           # chequea los criterios de aceptación
 ```
 
 Detalle completo en [`ejercicio1/README.md`](./ejercicio1/README.md).
+
+## Entregable 1 — Cliente de LLM Robusto y Asíncrono
+
+Cliente unificado que expone **OpenAI** y **Anthropic** detrás de la misma
+interfaz asíncrona: validación Pydantic en la frontera, streaming token a
+token y errores capturados como dato en vez de excepciones que rompan el
+proceso. Cambiar de proveedor es cambiar una variable de entorno.
+
+```bash
+cd entregable1
+uv venv --python 3.12 && uv pip install -r requirements.txt
+cp .env.example .env          # alcanza con una de las dos API keys
+python verificar.py           # criterios de aceptación, sin gastar cuota
+python main.py                # prueba real: modo normal + streaming
+```
+
+Detalle completo en [`entregable1/README.md`](./entregable1/README.md).
 
 ## Convenciones del repositorio
 

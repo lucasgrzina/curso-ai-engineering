@@ -1,0 +1,4 @@
+anthropic>=1.5
+openai>=1.50
+pydantic>=2.7
+python-dotenv>=1.0
