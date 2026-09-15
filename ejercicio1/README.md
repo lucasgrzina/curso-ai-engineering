@@ -1,4 +1,4 @@
-# Entregable 1 · Orquestador Concurrente de Modelos
+# Ejercicio 1 · Orquestador Concurrente de Modelos
 
 Módulo 1 — *La interfaz base: conexión y abstracción de LLMs*.
 Implementación en **Python 3.12** de un orquestador que consulta varios modelos
@@ -185,7 +185,7 @@ Salida de `verificar.py`:
 ## 7. Estructura
 
 ```
-entregable/
+ejercicio1/
 ├── orquestador/
 │   ├── __init__.py
 │   ├── __main__.py         # CLI: único punto de entrada con asyncio.run()
