@@ -15,7 +15,7 @@ verificación.
 | # | Módulo | Tema | Estado |
 |---|---|---|---|
 | [1](./entregable1) | Módulo 1 · La interfaz base | Cliente de LLM robusto y asíncrono: OpenAI + Anthropic + Gemini tras una interfaz común, Pydantic, streaming | ✅ Completo |
-| 2 | Módulo 2 · Encadenamiento lógico | Pipeline de procesamiento validado (LangChain / LCEL) | ⏳ Pendiente |
+| [2](./entregable2) | Módulo 2 · Encadenamiento lógico | Pipeline de procesamiento validado: LangChain / LCEL, salida estructurada con Pydantic, `.with_retry()` | ✅ Completo |
 | 3 | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG) | ⏳ Pendiente |
 | 4 | Módulo 4 · Escalabilidad documental | RAG en la nube con Pinecone | ⏳ Pendiente |
 | 5 | Módulo 5 · Razonamiento autónomo | Agente cíclico con memoria persistente (LangGraph) | ⏳ Pendiente |
@@ -57,6 +57,25 @@ python main.py                # prueba real: modo normal + streaming
 ```
 
 Detalle completo en [`entregable1/README.md`](./entregable1/README.md).
+
+## Entregable 2 — Pipeline de Procesamiento Validado
+
+Pipeline de extracción de entidades técnicas con **LangChain / LCEL**: un
+texto libre (log de error, descripción de arquitectura) entra y sale un
+objeto validado con Pydantic (tecnologías, nivel de criticidad, resumen
+técnico). Cadena `prompt | model.with_structured_output(Schema)` con
+`.with_retry()` como lógica de resiliencia ante JSON mal formado o
+incompleto, intercambiable entre OpenAI, Anthropic y Gemini.
+
+```bash
+cd entregable2
+uv venv --python 3.12 && uv pip install -r requirements.txt
+cp .env.example .env          # alcanza con una de las tres API keys
+python verificar.py           # criterios de aceptación, sin gastar cuota
+python main.py                # prueba real: texto claro + prueba de estrés
+```
+
+Detalle completo en [`entregable2/README.md`](./entregable2/README.md).
 
 ## Convenciones del repositorio
 

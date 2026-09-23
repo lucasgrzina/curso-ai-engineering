@@ -1,0 +1,13 @@
+[project]
+name = "pipeline-extraccion-entidades"
+version = "1.0.0"
+description = "Entregable 2 - Pipeline de procesamiento validado (LangChain / LCEL)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
+    "langchain-anthropic>=0.3",
+    "langchain-google-genai>=2.0",
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+]
