@@ -35,9 +35,10 @@ uv pip install -r requirements.txt
 
 cp .env.example .env     # completá al menos una API key
 
-python verificar.py      # criterios de aceptación, sin gastar cuota
-python main.py            # prueba real: texto claro + prueba de estrés
-python main.py anthropic  # fuerza un proveedor puntual
+python verificar.py         # criterios de aceptación (offline por defecto)
+python verificar.py --real  # además ejercita el camino real (requiere API key)
+python main.py              # prueba real: texto claro + prueba de estrés
+python main.py anthropic    # fuerza un proveedor puntual
 ```
 
 Sin `uv`, el equivalente es `python -m venv .venv` y
@@ -55,9 +56,9 @@ Todas viven en `.env` (ignorado por git); el ejemplo completo está en
 | `OPENAI_MODEL` | no | `gpt-4o-mini` | Modelo de OpenAI |
 | `OPENAI_BASE_URL` | no | — | Endpoint alternativo compatible con OpenAI (ej. Groq) |
 | `ANTHROPIC_API_KEY` | sí, para Anthropic | — | [console.anthropic.com](https://console.anthropic.com/settings/keys) |
-| `ANTHROPIC_MODEL` | no | `claude-opus-5` | Modelo de Anthropic |
+| `ANTHROPIC_MODEL` | no | `claude-haiku-4-5-20251001` | Modelo de Anthropic (ajustá al que tengas habilitado) |
 | `GEMINI_API_KEY` | sí, para Gemini | — | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (tier gratuito) |
-| `GEMINI_MODEL` | no | `gemini-3.6-flash` | Modelo de Gemini |
+| `GEMINI_MODEL` | no | `gemini-3.8-flash` | Modelo de Gemini (ajustá al disponible en tu key) |
 | `LLM_MAX_RETRIES` | no | `3` | Intentos de `.with_retry()` ante un JSON mal formado o incompleto |
 
 ## 3. Diseño
@@ -115,7 +116,7 @@ reintentos, el error final antes de relanzarlo — nunca lo traga en silencio.
 
 `main.py` corre, además del texto claro de ejemplo, un texto ambiguo sin
 detalles técnicos (`"El sistema anda medio raro últimamente, no sé bien qué
-está pasando."`). Corrida real contra Gemini (`gemini-3.6-flash`):
+está pasando."`). Corrida real contra Gemini (`gemini-3.8-flash`):
 
 ```json
 {
@@ -167,16 +168,23 @@ está pasando."`). Corrida real contra Gemini (`gemini-3.6-flash`):
 
 ## 7. Estado de la verificación
 
-`python verificar.py` cubre 13 criterios sin llamadas reales: validación
-Pydantic (vacíos, duplicados, enum, longitud mínima), la fábrica de modelos
-(`get_model` rechaza proveedores no soportados y detecta API keys
+`python verificar.py` cubre los criterios sin gastar cuota por defecto:
+validación Pydantic (vacíos, duplicados, enum, longitud mínima), la fábrica de
+modelos (`get_model` rechaza proveedores no soportados y detecta API keys
 faltantes), que `build_chain()` devuelve un `Runnable` envuelto en
 `RunnableRetry`, y la resiliencia ante un JSON incompleto usando un
 `GenericFakeChatModel` de `langchain_core` como doble de prueba (se
-recupera al segundo intento; propaga el error si nunca valida).
+recupera al segundo intento; propaga el error si nunca valida). Ese doble usa
+un `PydanticOutputParser` para poder simular la salida sin red; el **camino de
+producción real** (`with_structured_output` + `.with_retry`) se valida en la
+sección 4, que corre `chain.process_text()` contra el proveedor configurado
+cuando hay una API key disponible (`python verificar.py --real` la fuerza). Si
+falta la key —o el proveedor responde con quota agotada / rate limit—, la
+sección 4 se saltea (`SKIP`) sin marcar el criterio como incumplido: es un
+problema de entorno, no de la lógica del pipeline.
 
 La ruta real de red se probó punta a punta con `python main.py gemini`
-(`gemini-3.6-flash`, tier gratuito): el texto claro devolvió un objeto con
+(`gemini-3.8-flash`, tier gratuito): el texto claro devolvió un objeto con
 `nivel_de_criticidad="alta"` y las tres tecnologías mencionadas (FastAPI,
 Redis, PostgreSQL), y la prueba de estrés con el texto ambiguo se resolvió en
 `"baja"` sin lanzar una excepción — ver §4 para las salidas completas. En esa

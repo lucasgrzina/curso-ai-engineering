@@ -27,10 +27,12 @@ load_dotenv()
 logger = logging.getLogger("pipeline_extraccion")
 
 # Modelos por defecto de cada proveedor, si el .env no dice otra cosa.
+# Son IDs reales y vigentes para que el pipeline corra de entrada; se pueden
+# ajustar desde el `.env` (variables *_MODEL) según el modelo que tengas habilitado.
 DEFAULT_MODELS: dict[str, str] = {
     "openai": "gpt-4o-mini",
-    "anthropic": "claude-opus-5",
-    "gemini": "gemini-3.6-flash",
+    "anthropic": "claude-haiku-4-5-20251001",
+    "gemini": "gemini-3.8-flash",
 }
 
 _API_KEY_VARS: dict[str, str] = {

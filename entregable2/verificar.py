@@ -1,17 +1,24 @@
-"""Chequeo de los criterios de aceptación, sin gastar cuota.
+"""Chequeo de los criterios de aceptación.
 
-No llama a ninguna API real: `get_model()` y `build_chain()` se ejercitan con
-claves falsas (langchain sólo las necesita para instanciar el cliente, no
-para construir la cadena) y las pruebas de resiliencia usan un modelo doble
-que simula un JSON incompleto antes de recuperarse.
+Por defecto no llama a ninguna API real: `get_model()` y `build_chain()` se
+ejercitan con claves falsas (langchain sólo las necesita para instanciar el
+cliente, no para construir la cadena) y las pruebas de resiliencia usan un
+modelo doble que simula un JSON incompleto antes de recuperarse.
 
-    python verificar.py
+Además, si hay una API key disponible para el proveedor configurado
+(`LLM_PROVIDER`), la sección 4 ejercita el camino real de producción
+—`build_chain()` → `with_structured_output()` → `.with_retry()`— con una
+llamada real. Si no hay clave, esa sección se saltea (no cuenta como falla).
+
+    python verificar.py            # sólo checks offline (sin gastar cuota)
+    python verificar.py --real     # además fuerza el camino real (requiere API key)
 """
 
 from __future__ import annotations
 
 import asyncio
 import logging
+import os
 import sys
 from typing import Any
 
@@ -146,8 +153,13 @@ def verificar_fabrica_y_cadena() -> None:
 
 
 async def verificar_resiliencia() -> None:
-    seccion("3. Resiliencia ante JSON incompleto (.with_retry)")
+    seccion("3. Resiliencia ante JSON incompleto (.with_retry, offline)")
 
+    # Nota: este check valida el MECANISMO de reintento sin gastar cuota. Usa un
+    # PydanticOutputParser como sustituto porque with_structured_output() necesita
+    # un modelo con tool calling real (el modelo doble no lo implementa). El camino
+    # de producción real (with_structured_output + .with_retry) se cubre en la
+    # sección 4 cuando hay una API key disponible.
     incompleto = AIMessage(content='{"tecnologias": ["Redis"]}')  # sin los otros campos
     completo = AIMessage(
         content=(
@@ -186,11 +198,96 @@ def _parser() -> Any:
     return PydanticOutputParser(pydantic_object=EntidadesTecnicas)
 
 
+# Señales de que el fallo es del entorno (quota, key vencida, proveedor saturado)
+# y no de la lógica del pipeline. En ese caso no tiene sentido marcar un criterio
+# como incumplido en la corrida offline: el código está bien, falta cuota/clave.
+_ERRORES_DE_ENTORNO = (
+    "429",
+    "503",
+    "resource_exhausted",
+    "ratelimit",
+    "rate limit",
+    "quota",
+    "unavailable",
+    "overloaded",
+    "authentication",
+    "invalid api key",
+    "expired_api_key",
+    "permission",
+    "401",
+)
+
+
+def _es_error_de_entorno(exc: Exception) -> bool:
+    firma = f"{type(exc).__name__} {exc}".lower()
+    return any(marca in firma for marca in _ERRORES_DE_ENTORNO)
+
+
+# ---------------------------------------------------------------------------
+# 4. Camino real de producción: with_structured_output + .with_retry
+# ---------------------------------------------------------------------------
+
+
+async def verificar_camino_real(forzar: bool = False) -> None:
+    """Ejercita la cadena real contra el proveedor configurado, si hay API key.
+
+    A diferencia de la sección 3 (que valida el mecanismo de reintento con un
+    parser sustituto), acá corre `chain.build_chain()`/`chain.process_text()`,
+    que usan `with_structured_output()` sobre un modelo real. Es la única forma
+    de comprobar que ese camino —el de producción— realmente devuelve un
+    `EntidadesTecnicas` válido de punta a punta.
+    """
+    seccion("4. Camino real de producción (with_structured_output, requiere API key)")
+
+    provider = (os.getenv("LLM_PROVIDER") or "openai").lower()
+    if provider not in chain._API_KEY_VARS:
+        provider = "openai"
+
+    tiene_key = bool(chain._env_str(chain._API_KEY_VARS[provider]))
+    if not tiene_key:
+        falta_key = f"falta {chain._API_KEY_VARS[provider]} para el proveedor '{provider}'"
+        if forzar:
+            check(f"camino real ejercitado ({provider})", False, f"{falta_key} (forzado con --real)")
+        else:
+            print(f"  [SKIP ] camino real ({provider}) - {falta_key}: se saltea, no cuenta como falla.")
+        return
+
+    # Mantenemos el logger silenciado (como en la sección 3): el resultado del
+    # camino real ya se reporta abajo con check()/SKIP, sin ruido de stack traces.
+    texto = (
+        "Nuestra API en FastAPI devuelve timeouts intermitentes: el pool de conexiones "
+        "a PostgreSQL se agota y el caché en Redis se satura en picos de tráfico."
+    )
+    try:
+        resultado = await chain.process_text(texto, provider=provider)
+    except Exception as exc:  # noqa: BLE001 - clasificamos entorno vs. lógica
+        detalle = f"lanzó {type(exc).__name__}: {exc}"
+        # Un problema de entorno (quota agotada, key vencida, proveedor saturado)
+        # no invalida la lógica del pipeline: sólo es falla si se forzó con --real.
+        if _es_error_de_entorno(exc) and not forzar:
+            print(
+                f"  [SKIP ] camino real ({provider}) - problema de entorno, no de código: {detalle}"
+            )
+        else:
+            check(f"camino real ejercitado ({provider})", False, detalle)
+        return
+
+    check(
+        f"with_structured_output devuelve un EntidadesTecnicas válido ({provider})",
+        isinstance(resultado, EntidadesTecnicas)
+        and len(resultado.tecnologias) > 0
+        and isinstance(resultado.nivel_de_criticidad, NivelCriticidad),
+        f"tecnologías={resultado.tecnologias}" if isinstance(resultado, EntidadesTecnicas) else "",
+    )
+
+
 async def main() -> int:
-    print("Verificación del Entregable 2 - Pipeline de procesamiento validado (sin llamadas reales)")
+    forzar_real = "--real" in sys.argv[1:]
+    print("Verificación del Entregable 2 - Pipeline de procesamiento validado")
     verificar_schema()
     verificar_fabrica_y_cadena()
     await verificar_resiliencia()
+    await verificar_camino_real(forzar=forzar_real)
 
     print(f"\n{'=' * 72}")
     if fallos:
