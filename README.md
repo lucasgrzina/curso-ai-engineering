@@ -16,7 +16,7 @@ verificación.
 |---|---|---|---|
 | [1](./entregable1) | Módulo 1 · La interfaz base | Cliente de LLM robusto y asíncrono: OpenAI + Anthropic + Gemini tras una interfaz común, Pydantic, streaming | ✅ Completo |
 | [2](./entregable2) | Módulo 2 · Encadenamiento lógico | Pipeline de procesamiento validado: LangChain / LCEL, salida estructurada con Pydantic, `.with_retry()` | ✅ Completo |
-| 3 | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG) | ⏳ Pendiente |
+| [3](./entregable3) | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG): ChromaDB, embeddings locales (HuggingFace), cadena LCEL con `PydanticOutputParser` y prueba anti-alucinación | ✅ Completo |
 | 4 | Módulo 4 · Escalabilidad documental | RAG en la nube con Pinecone | ⏳ Pendiente |
 | 5 | Módulo 5 · Razonamiento autónomo | Agente cíclico con memoria persistente (LangGraph) | ⏳ Pendiente |
 | 6 | Módulo 6 · Sistemas multi-agente | Orquestador multi-agente especializado | ⏳ Pendiente |
@@ -76,6 +76,28 @@ python main.py                # prueba real: texto claro + prueba de estrés
 ```
 
 Detalle completo en [`entregable2/README.md`](./entregable2/README.md).
+
+## Entregable 3 — Sistema de Recuperación Semántica Local (RAG)
+
+RAG End-to-End sobre un corpus de políticas de una rentadora de autos
+("AutoRenta"): ingesta con
+*chunking* en tokens y persistencia en **ChromaDB**, recuperación por similitud
+con `top_k` acotado y generación *grounded* con una cadena **LCEL** que solo
+responde con el contexto recuperado. Embeddings **locales** (HuggingFace
+`all-MiniLM-L6-v2`, sin API key); generación intercambiable entre Gemini,
+OpenAI y Anthropic. Incluye una "pregunta trampa" que verifica que el modelo no
+alucina cuando el dato no está en los documentos.
+
+```bash
+cd entregable3
+uv venv --python 3.12 && uv pip install -r requirements.txt
+cp .env.example .env          # GEMINI_API_KEY (o GOOGLE_API_KEY); los embeddings son locales
+python ingesta.py             # puebla ChromaDB (descarga el modelo la 1ª vez)
+python main.py                # 2 pruebas: con respuesta + trampa
+python verificar.py           # criterios de aceptación (offline por defecto)
+```
+
+Detalle completo en [`entregable3/README.md`](./entregable3/README.md).
 
 ## Convenciones del repositorio
 

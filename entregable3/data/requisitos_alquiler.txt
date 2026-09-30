@@ -1,0 +1,21 @@
+Requisitos de Alquiler - AutoRenta
+
+Para alquilar un vehículo en AutoRenta, el conductor titular debe cumplir con una serie
+de requisitos mínimos que se verifican al momento de retirar la unidad en la sucursal.
+
+La edad mínima para alquilar un vehículo de las categorías económica y estándar es de
+21 años. Para las categorías premium, SUV y vans de 12 pasajeros, la edad mínima es de
+25 años. Los conductores de entre 21 y 24 años abonan un cargo adicional por conductor
+joven, fijado en un monto diario que se informa al momento de la reserva.
+
+El conductor debe presentar una licencia de conducir vigente, con una antigüedad mínima
+de 2 años desde su emisión. En el caso de conductores extranjeros, se acepta la licencia
+del país de origen junto con el Permiso Internacional de Conducir cuando corresponda.
+
+Es obligatorio presentar una tarjeta de crédito internacional a nombre del conductor
+titular para el bloqueo de la garantía o depósito de seguridad. No se aceptan tarjetas
+de débito ni efectivo como garantía. El monto del depósito varía según la categoría del
+vehículo y se libera dentro de los 15 días hábiles posteriores a la devolución.
+
+Se puede agregar hasta 3 conductores adicionales por contrato, cada uno abonando un
+cargo diario y presentando su propia licencia de conducir válida.

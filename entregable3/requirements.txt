@@ -1,0 +1,13 @@
+langchain-core>=0.3
+langchain-community>=0.3
+langchain-text-splitters>=0.3
+langchain-chroma>=0.1
+langchain-huggingface>=0.1
+langchain-openai>=0.2
+langchain-anthropic>=0.3
+langchain-google-genai>=2.0
+sentence-transformers>=3.0
+chromadb>=0.5
+tiktoken>=0.7
+pydantic>=2.7
+python-dotenv>=1.0

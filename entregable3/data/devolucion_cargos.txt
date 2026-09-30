@@ -1,0 +1,21 @@
+Devolución, Cancelación y Cargos - AutoRenta
+
+La devolución del vehículo debe realizarse en la fecha, hora y sucursal acordadas en el
+contrato. AutoRenta otorga una tolerancia de 29 minutos sobre el horario pactado; superada
+esa tolerancia, se factura una hora adicional, y pasadas las 2 horas de demora se cobra un
+día completo de alquiler adicional.
+
+La devolución en una sucursal distinta a la del retiro (servicio one-way) está permitida
+dentro del mismo país y genera un cargo por diferencia de sucursal, cuyo monto depende de
+la distancia entre las localidades. Este servicio debe declararse al momento de la reserva.
+
+Las cancelaciones de reservas son sin costo si se realizan con al menos 48 horas de
+anticipación respecto del horario de retiro. Si la cancelación se efectúa dentro de las 48
+horas previas, AutoRenta retiene el equivalente a un día de alquiler en concepto de gastos
+administrativos. La ausencia del cliente sin aviso (no-show) implica la retención del total
+de la primera jornada reservada.
+
+El vehículo debe devolverse en condiciones razonables de limpieza. Se aplica un cargo por
+limpieza especial cuando la unidad se devuelve excesivamente sucia, con manchas difíciles,
+arena o restos de arena, o con olor a tabaco, ya que está prohibido fumar dentro de todas
+las unidades de la flota.

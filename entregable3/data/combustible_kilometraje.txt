@@ -1,0 +1,20 @@
+Política de Combustible y Kilometraje - AutoRenta
+
+AutoRenta aplica un esquema de combustible "tanque lleno a tanque lleno" (full-to-full):
+el vehículo se entrega con el tanque lleno y el cliente debe devolverlo con el tanque
+lleno. Si la unidad se devuelve con menos combustible del entregado, se aplica un cargo
+por reabastecimiento que incluye el costo del combustible faltante más una tarifa de
+servicio fija de gestión.
+
+La tarifa estándar de alquiler incluye 200 kilómetros por día sin cargo adicional. El
+excedente se factura por kilómetro recorrido según la tarifa vigente de la categoría del
+vehículo, que se detalla en el contrato al momento del retiro.
+
+Para viajes largos, AutoRenta ofrece un plan de kilometraje ilimitado disponible en las
+categorías económica, estándar e intermedia, contratable como adicional al momento de la
+reserva. Las categorías premium y las vans de 12 pasajeros no cuentan con la opción de
+kilometraje ilimitado.
+
+El vehículo alquilado no puede cruzar fronteras internacionales sin una autorización
+expresa por escrito emitida por AutoRenta, que debe solicitarse con un mínimo de 72 horas
+de anticipación y puede implicar cargos adicionales de seguro.
