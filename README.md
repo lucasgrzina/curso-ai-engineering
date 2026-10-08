@@ -18,7 +18,7 @@ verificación.
 | [2](./entregable2) | Módulo 2 · Encadenamiento lógico | Pipeline de procesamiento validado: LangChain / LCEL, salida estructurada con Pydantic, `.with_retry()` | ✅ Completo |
 | [3](./entregable3) | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG): ChromaDB, embeddings locales (HuggingFace), cadena LCEL con `PydanticOutputParser` y prueba anti-alucinación | ✅ Completo |
 | [4](./entregable4) | Módulo 4 · Escalabilidad documental | RAG escalable en la nube: Pinecone Serverless, recuperador híbrido (BM25 + vectorial con RRF) y evaluación con Precision@k / Recall@k | ✅ Completo |
-| 5 | Módulo 5 · Razonamiento autónomo | Agente cíclico con memoria persistente (LangGraph) | ⏳ Pendiente |
+| [5](./entregable5) | Módulo 5 · Razonamiento autónomo | Agente ReAct cíclico con LangGraph: herramientas `@tool`, `tools_condition`, memoria persistente con SQLite (`thread_id`) y traza de ejecución | ✅ Completo |
 | 6 | Módulo 6 · Sistemas multi-agente | Orquestador multi-agente especializado | ⏳ Pendiente |
 | 7 | Módulo 7 · Producción y robustez | Observabilidad, costos y despliegue | ⏳ Pendiente |
 | 8 | Módulo 8 · Capstone | Entrega final | ⏳ Pendiente |
@@ -129,3 +129,24 @@ Detalle completo en [`entregable4/README.md`](./entregable4/README.md).
   claves gratuitas.
 * El material de lectura del curso no se versiona: es contenido propietario de
   CoderHouse.
+
+## Entregable 5 — Agente de Razonamiento Cíclico con Memoria Persistente
+
+Agente **ReAct** con **LangGraph**: el LLM decide por sí mismo cuándo llamar a una
+herramienta (sin rutas `if/else`), vuelve a razonar con el resultado y puede
+encadenar varias llamadas (nombre → `cliente_id` → pedidos). El grafo hereda de
+`MessagesState`, usa `tools_condition` y persiste cada paso en **SQLite**
+(`AsyncSqliteSaver`) por `thread_id`, así que recuerda la conversación incluso
+con una conexión nueva. Cubre los errores comunes de la consigna: docstrings
+descriptivos, `recursion_limit` y recorte del historial. Incluye la traza ReAct
+real en `evidencia/`.
+
+```bash
+cd entregable5
+uv venv --python 3.12 && uv pip install -r requirements.txt
+cp .env.example .env          # API key de UN proveedor (gemini / openai / anthropic)
+python main.py                # 4 escenarios reales + traza en evidencia/
+python verificar.py           # criterios de aceptación (offline por defecto)
+```
+
+Detalle completo en [`entregable5/README.md`](./entregable5/README.md).
