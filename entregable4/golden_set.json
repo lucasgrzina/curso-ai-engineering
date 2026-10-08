@@ -1,0 +1,22 @@
+[
+  {
+    "pregunta": "¿Qué significa el error ERR_TLS_4021 y cómo se soluciona?",
+    "documento_id_esperado": "autenticacion/errores_tls.md"
+  },
+  {
+    "pregunta": "¿Cada cuántos días vence por defecto un token de API?",
+    "documento_id_esperado": "autenticacion/tokens_api.md"
+  },
+  {
+    "pregunta": "¿Cuántas veces se reintenta un trabajo fallido antes de pasar a la dead letter queue?",
+    "documento_id_esperado": "despliegue/configuracion_workers.md"
+  },
+  {
+    "pregunta": "¿Cuántas solicitudes por minuto permite el plan Estándar antes de responder ERR_RATE_5001?",
+    "documento_id_esperado": "operaciones/limites_y_cuotas.md"
+  },
+  {
+    "pregunta": "¿Qué métrica indica la cantidad de trabajos pendientes por cola?",
+    "documento_id_esperado": "operaciones/monitoreo_metricas.md"
+  }
+]
