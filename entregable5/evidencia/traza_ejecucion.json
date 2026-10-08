@@ -1,0 +1,139 @@
+{
+  "proveedor": "gemini",
+  "recursion_limit": 10,
+  "turno_1_multi_paso": {
+    "thread_id": "demo-multipaso",
+    "pregunta": "¿Cuántos pedidos tuvo Ana García y cuál fue el total?",
+    "herramientas_invocadas": [
+      "buscar_cliente_por_nombre",
+      "buscar_pedidos"
+    ],
+    "traza": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuántos pedidos tuvo Ana García y cuál fue el total?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_cliente_por_nombre",
+            "argumentos": {
+              "nombre": "Ana García"
+            }
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"cliente\": \"Ana García\", \"cliente_id\": 102}",
+        "herramienta": "buscar_cliente_por_nombre"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_pedidos",
+            "argumentos": {
+              "cliente_id": 102
+            }
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"cliente_id\": 102, \"pedidos\": 3, \"total\": 14500}",
+        "herramienta": "buscar_pedidos"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "Ana García tuvo 3 pedidos, con un monto total de $14.500."
+      }
+    ]
+  },
+  "turno_2_memoria": {
+    "thread_id": "demo-multipaso",
+    "pregunta": "¿Y el último?",
+    "herramientas_invocadas": [
+      "buscar_ultimo_pedido"
+    ],
+    "traza": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Y el último?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_ultimo_pedido",
+            "argumentos": {
+              "cliente_id": 102
+            }
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"cliente_id\": 102, \"ultimo_pedido\": {\"id\": \"P-1003\", \"fecha\": \"2026-05-20\", \"monto\": 5000}}",
+        "herramienta": "buscar_ultimo_pedido"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "Su último pedido fue el **P-1003**, realizado el 20/05/2026, por un monto de $5.000."
+      }
+    ]
+  },
+  "turno_3_error_y_aclaracion": {
+    "thread_id": "demo-error",
+    "pregunta": "¿Cuántos pedidos tuvo el cliente Roberto Sánchez?",
+    "herramientas_invocadas": [
+      "buscar_cliente_por_nombre"
+    ],
+    "traza": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuántos pedidos tuvo el cliente Roberto Sánchez?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_cliente_por_nombre",
+            "argumentos": {
+              "nombre": "Roberto Sánchez"
+            }
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"error\": \"No se encontró ningún cliente llamado 'Roberto Sánchez'. Verificá que el nombre y apellido estén completos y bien escritos.\"}",
+        "herramienta": "buscar_cliente_por_nombre"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "No encontré a ningún cliente registrado con el nombre \"Roberto Sánchez\". Por favor, confirmá si el nombre y apellido están completos y correctamente escritos."
+      }
+    ]
+  },
+  "turno_4_aislamiento_de_hilos": {
+    "thread_id": "demo-otro-hilo",
+    "pregunta": "¿Y el último?",
+    "herramientas_invocadas": [],
+    "traza": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Y el último?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "¿De qué cliente te gustaría consultar el último pedido? Por favor, indicame su nombre completo."
+      }
+    ]
+  }
+}

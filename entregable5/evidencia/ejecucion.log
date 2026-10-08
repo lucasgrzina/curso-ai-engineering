@@ -1,0 +1,39 @@
+Proveedor: gemini | recursion_limit=10 | checkpoints: checkpoints.sqlite
+
+==============================================================================
+1) Razonamiento multi-paso [thread_id=demo-multipaso]
+==============================================================================
+Usuario: ¿Cuántos pedidos tuvo Ana García y cuál fue el total?
+-> El agente decide usar la herramienta: buscar_cliente_por_nombre({'nombre': 'Ana García'})
+<- La herramienta buscar_cliente_por_nombre devuelve: {"cliente": "Ana García", "cliente_id": 102}
+-> El agente decide usar la herramienta: buscar_pedidos({'cliente_id': 102})
+<- La herramienta buscar_pedidos devuelve: {"cliente_id": 102, "pedidos": 3, "total": 14500}
+Respuesta: Ana García tuvo 3 pedidos, con un monto total de $14.500.
+   (herramientas invocadas en este turno: 2 ['buscar_cliente_por_nombre', 'buscar_pedidos'])
+
+==============================================================================
+2) Memoria entre turnos (mismo thread_id, conexión SQLite nueva) [thread_id=demo-multipaso]
+==============================================================================
+Usuario: ¿Y el último?
+-> El agente decide usar la herramienta: buscar_ultimo_pedido({'cliente_id': 102})
+<- La herramienta buscar_ultimo_pedido devuelve: {"cliente_id": 102, "ultimo_pedido": {"id": "P-1003", "fecha": "2026-05-20", "monto": 5000}}
+Respuesta: Su último pedido fue el **P-1003**, realizado el 20/05/2026, por un monto de $5.000.
+   (herramientas invocadas en este turno: 1 ['buscar_ultimo_pedido'])
+
+==============================================================================
+3) Ciclo de retorno: la herramienta falla -> el agente pide aclaración [thread_id=demo-error]
+==============================================================================
+Usuario: ¿Cuántos pedidos tuvo el cliente Roberto Sánchez?
+-> El agente decide usar la herramienta: buscar_cliente_por_nombre({'nombre': 'Roberto Sánchez'})
+<- La herramienta buscar_cliente_por_nombre devuelve: {"error": "No se encontró ningún cliente llamado 'Roberto Sánchez'. Verificá que el nombre y apellido estén completos y bien escritos."}
+Respuesta: No encontré a ningún cliente registrado con el nombre "Roberto Sánchez". Por favor, confirmá si el nombre y apellido están completos y correctamente escritos.
+   (herramientas invocadas en este turno: 1 ['buscar_cliente_por_nombre'])
+
+==============================================================================
+4) Aislamiento: la misma pregunta ambigua en OTRO thread_id [thread_id=demo-otro-hilo]
+==============================================================================
+Usuario: ¿Y el último?
+Respuesta: ¿De qué cliente te gustaría consultar el último pedido? Por favor, indicame su nombre completo.
+   (herramientas invocadas en este turno: 0 [])
+
+Traza guardada en evidencia\traza_ejecucion.json y evidencia\ejecucion.log
