@@ -17,7 +17,7 @@ verificación.
 | [1](./entregable1) | Módulo 1 · La interfaz base | Cliente de LLM robusto y asíncrono: OpenAI + Anthropic + Gemini tras una interfaz común, Pydantic, streaming | ✅ Completo |
 | [2](./entregable2) | Módulo 2 · Encadenamiento lógico | Pipeline de procesamiento validado: LangChain / LCEL, salida estructurada con Pydantic, `.with_retry()` | ✅ Completo |
 | [3](./entregable3) | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG): ChromaDB, embeddings locales (HuggingFace), cadena LCEL con `PydanticOutputParser` y prueba anti-alucinación | ✅ Completo |
-| 4 | Módulo 4 · Escalabilidad documental | RAG en la nube con Pinecone | ⏳ Pendiente |
+| [4](./entregable4) | Módulo 4 · Escalabilidad documental | RAG escalable en la nube: Pinecone Serverless, recuperador híbrido (BM25 + vectorial con RRF) y evaluación con Precision@k / Recall@k | ✅ Completo |
 | 5 | Módulo 5 · Razonamiento autónomo | Agente cíclico con memoria persistente (LangGraph) | ⏳ Pendiente |
 | 6 | Módulo 6 · Sistemas multi-agente | Orquestador multi-agente especializado | ⏳ Pendiente |
 | 7 | Módulo 7 · Producción y robustez | Observabilidad, costos y despliegue | ⏳ Pendiente |
@@ -98,6 +98,27 @@ python verificar.py           # criterios de aceptación (offline por defecto)
 ```
 
 Detalle completo en [`entregable3/README.md`](./entregable3/README.md).
+
+## Entregable 4 — Sistema RAG Escalable en la Nube (Pinecone)
+
+Escala el RAG local del Entregable 3 a la nube: ingesta por lotes a un índice
+**Pinecone Serverless** con metadata avanzada (fuente, página, categoría y el
+texto original), un **recuperador híbrido** que fusiona BM25 y búsqueda
+vectorial con `EnsembleRetriever` (RRF) y un `evaluate.py` que mide
+**Precision@5 y Recall@5** sobre un Golden Set. Embeddings locales: la única
+credencial es `PINECONE_API_KEY`.
+
+```bash
+cd entregable4
+uv venv --python 3.12 && uv pip install -r requirements.txt
+cp .env.example .env          # PINECONE_API_KEY (gratis en app.pinecone.io)
+python setup_index.py         # crea el índice Serverless si no existe
+python ingesta.py             # chunking + embeddings + batch upsert
+python evaluate.py            # Precision@5 / Recall@5
+python verificar.py           # criterios de aceptación (offline por defecto)
+```
+
+Detalle completo en [`entregable4/README.md`](./entregable4/README.md).
 
 ## Convenciones del repositorio
 

@@ -1,0 +1,126 @@
+# Ejecución real del Entregable 4 — 2026-10-07 22:44 — Windows 11, Python 3.12, Pinecone Serverless (aws/us-east-1)
+
+$ python ingesta.py --reset
+2026-10-07 22:44:55,472 [INFO] setup_index: El índice 'nimbus-rag-hibrido' ya existe — no se vuelve a crear
+2026-10-07 22:44:56,460 [INFO] ingesta: --reset: vaciando el namespace 'nimbus-docs'
+2026-10-07 22:44:56,770 [INFO] ingesta: Documentos cargados: 6
+2026-10-07 22:44:56,972 [INFO] ingesta: Fragmentos generados: 20 (a partir de 6 documentos)
+2026-10-07 22:45:13,699 [INFO] ingesta: Upsert: 20/20 vectores
+
+Ingesta lista: 20 vector(es) en el namespace 'nimbus-docs' del índice 'nimbus-rag-hibrido'.
+
+$ python evaluate.py --comparar
+========================================================================================
+Evaluación del recuperador — modo: hibrido (k=5)
+========================================================================================
+[OK ] ¿Qué significa el error ERR_TLS_4021 y cómo se soluciona?
+        esperado:    autenticacion/errores_tls.md
+        recuperados: ['autenticacion/errores_tls.md', 'autenticacion/errores_tls.md', 'despliegue/instalacion_docker.md', 'autenticacion/errores_tls.md', 'operaciones/limites_y_cuotas.md']
+        Recall@5: 100% | Precision@5: 60%
+[OK ] ¿Cada cuántos días vence por defecto un token de API?
+        esperado:    autenticacion/tokens_api.md
+        recuperados: ['autenticacion/tokens_api.md', 'autenticacion/tokens_api.md', 'autenticacion/tokens_api.md', 'operaciones/monitoreo_metricas.md', 'despliegue/configuracion_workers.md']
+        Recall@5: 100% | Precision@5: 60%
+[OK ] ¿Cuántas veces se reintenta un trabajo fallido antes de pasar a la dead letter queue?
+        esperado:    despliegue/configuracion_workers.md
+        recuperados: ['despliegue/configuracion_workers.md', 'despliegue/configuracion_workers.md', 'operaciones/monitoreo_metricas.md', 'despliegue/configuracion_workers.md', 'despliegue/configuracion_workers.md']
+        Recall@5: 100% | Precision@5: 80%
+[OK ] ¿Cuántas solicitudes por minuto permite el plan Estándar antes de responder ERR_RATE_5001?
+        esperado:    operaciones/limites_y_cuotas.md
+        recuperados: ['operaciones/limites_y_cuotas.md', 'operaciones/limites_y_cuotas.md', 'autenticacion/tokens_api.md', 'operaciones/limites_y_cuotas.md', 'autenticacion/errores_tls.md']
+        Recall@5: 100% | Precision@5: 60%
+[OK ] ¿Qué métrica indica la cantidad de trabajos pendientes por cola?
+        esperado:    operaciones/monitoreo_metricas.md
+        recuperados: ['despliegue/configuracion_workers.md', 'operaciones/monitoreo_metricas.md', 'despliegue/configuracion_workers.md', 'operaciones/limites_y_cuotas.md', 'operaciones/monitoreo_metricas.md']
+        Recall@5: 100% | Precision@5: 40%
+----------------------------------------------------------------------------------------
+RECALL@5 PROMEDIO:    100.0%
+PRECISION@5 PROMEDIO: 60.0%
+
+========================================================================================
+Comparación de estrategias (k=5)
+========================================================================================
+Modo             Recall@5      Precision@5
+bm25               100.0%            40.0%
+vectorial          100.0%            52.0%
+hibrido            100.0%            60.0%
+
+$ python main.py
+
+🔎 ¿Qué significa el error ERR_TLS_4021?  [hibrido]
+  1. [autenticacion/errores_tls.md · pág 1 · autenticacion] # Conexiones seguras y errores TLS en Nimbus Queue  Nimbus Queue exige cifrado de transporte en todas las cone...
+  2. [autenticacion/errores_tls.md · pág 2 · autenticacion] El error `ERR_TLS_4045` se produce en modo mTLS cuando el certificado del cliente fue revocado o no fue emitid...
+  3. [operaciones/limites_y_cuotas.md · pág 1 · operaciones] # Límites, cuotas y rate limiting  Nimbus Queue aplica límites para proteger la estabilidad del servicio. Hay ...
+  4. [autenticacion/errores_tls.md · pág 4 · autenticacion] ## Proxies corporativos que interceptan TLS  En muchas redes corporativas, un proxy de inspección termina la c...
+  5. [despliegue/instalacion_docker.md · pág 1 · despliegue] # Instalación de Nimbus Queue con Docker  La forma recomendada de desplegar Nimbus Queue en desarrollo y en en...
+
+🔎 ¿Cómo evito que un trabajo se ejecute dos veces al apagar un worker?  [hibrido]
+  1. [despliegue/configuracion_workers.md · pág 2 · despliegue] Cuando se agotan los reintentos, el trabajo pasa a la cola de mensajes muertos (*dead letter queue*), llamada ...
+  2. [despliegue/configuracion_workers.md · pág 1 · despliegue] # Configuración y escalado de workers  Los workers son los procesos que ejecutan los trabajos encolados. Cada ...
+  3. [despliegue/configuracion_workers.md · pág 3 · despliegue] ## Prioridades entre colas  Un worker suscripto a varias colas necesita una regla para decidir de cuál tomar e...
+  4. [despliegue/configuracion_workers.md · pág 4 · despliegue] ## Gestión de memoria y reciclado de procesos  Los trabajos de larga duración pueden acumular memoria con el t...
+  5. [operaciones/limites_y_cuotas.md · pág 1 · operaciones] # Límites, cuotas y rate limiting  Nimbus Queue aplica límites para proteger la estabilidad del servicio. Hay ...
+
+🔎 ¿Qué hacer si la API devuelve 429?  [hibrido]
+  1. [operaciones/limites_y_cuotas.md · pág 1 · operaciones] # Límites, cuotas y rate limiting  Nimbus Queue aplica límites para proteger la estabilidad del servicio. Hay ...
+  2. [autenticacion/tokens_api.md · pág 2 · autenticacion] Cuando un token es inválido, la API responde con el código HTTP 401 y el cuerpo `{"error": "ERR_AUTH_1003", "d...
+  3. [despliegue/configuracion_workers.md · pág 3 · despliegue] ## Prioridades entre colas  Un worker suscripto a varias colas necesita una regla para decidir de cuál tomar e...
+  4. [autenticacion/tokens_api.md · pág 3 · autenticacion] ## Tokens de servicio y tokens personales  Los **tokens personales** están asociados a una persona del equipo ...
+  5. [despliegue/instalacion_docker.md · pág 2 · despliegue] ## Puertos y red  Por defecto solo `nq-api` publica un puerto hacia el host (8080). El resto de los servicios ...
+
+$ python verificar.py --real
+Verificación del Entregable 4 - RAG escalable con Pinecone
+
+1. Configuración y contratos (config.py, schemas.py)
+----------------------------------------------------
+  [OK ] la dimensión del índice coincide con el modelo (all-MiniLM-L6-v2 = 384)
+  [OK ] chunk_size dentro del rango 500-800 tokens - chunk_size=700
+  [OK ] batch de upsert dentro del rango 100-200 - batch=100
+  [OK ] se usa un namespace explícito
+  [OK ] top-k por defecto es 5
+  [OK ] falta de PINECONE_API_KEY detectada
+  [OK ] CasoGolden con pregunta vacía rechazado
+  [OK ] Fragmento con página 0 rechazado
+
+2. Pipeline de ingesta (ingesta.py)
+-----------------------------------
+  [OK ] se cargan los documentos de /data - 6 documentos
+  [OK ] la categoría sale de la carpeta contenedora
+  [OK ] el chunking genera más de un fragmento por documento en promedio - 20 chunks
+  [OK ] todos los chunks comparten el mismo esquema de metadata (sin schema drift)
+  [OK ] los IDs son únicos (y determinísticos: <fuente>::<n>)
+  [OK ] el texto original queda disponible como page_content (se guarda en metadata['text'])
+  [OK ] el batch upsert parte 250 vectores en lotes 100/100/50 - [100, 100, 50]
+
+3. Recuperador híbrido (rag_system.py)
+--------------------------------------
+  [OK ] el tokenizador deja un código de error como UN solo token
+  [OK ] el tokenizador ignora acentos y mayúsculas
+  [OK ] BM25 encuentra por término exacto el documento del código de error - top-1=autenticacion/errores_tls.md
+  [OK ] RAGSystem devuelve a lo sumo k=5 fragmentos - 5
+  [OK ] RRF premia al documento presente en ambos rankings - top-1=autenticacion/errores_tls.md
+  [OK ] la fusión no duplica fragmentos
+  [OK ] los resultados son Fragmento con metadata completa
+  [OK ] el modo 'bm25' aísla al recuperador léxico
+
+4. Evaluación (evaluate.py)
+---------------------------
+  [OK ] Recall@5: 1.0 si el documento esperado está en el top-5
+  [OK ] Recall@2: 0.0 si el documento esperado queda fuera del top-2
+  [OK ] Precision@5: fracción de los 5 puestos que son del documento esperado
+  [OK ] Precision@k con k=0 no divide por cero
+  [OK ] el Golden Set tiene 5 preguntas - 5
+  [OK ] todos los documentos esperados existen en el corpus
+  [OK ] evaluar() devuelve promedios en [0, 1]
+  [OK ] BM25 solo ya ubica el documento correcto en el top-5 de todo el Golden Set - recall@5=100%
+
+5. Pinecone real (requiere PINECONE_API_KEY e ingesta previa)
+-------------------------------------------------------------
+  [OK ] el índice es Serverless - {'serverless': {'cloud': 'aws', 'region': 'us-east-1'}}
+  [OK ] la dimensión del índice coincide con el modelo - dim=384
+  [OK ] el namespace contiene un vector por chunk - 20 vectores / 20 chunks
+  [OK ] el híbrido sobre Pinecone tiene Recall@5 de 100% en el Golden Set - recall@5=100%
+  [OK ] el texto y la metadata vuelven desde Pinecone (sin otra base) - autenticacion/errores_tls.md pág 1
+
+========================================================================
+Todos los criterios se cumplen.
