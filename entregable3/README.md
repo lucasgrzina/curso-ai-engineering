@@ -188,7 +188,45 @@ Y estas son "trampa" — no están en los documentos, deben devolver *"No tengo
 acceso a esa información…"*: *¿Tienen sillas para bebés?*, *¿Puedo pagar con
 criptomonedas?*, *¿Cuál es el teléfono de la sucursal del aeropuerto?*.
 
-## 5. Errores comunes que el entregable evita
+## 5. Ejemplo de ejecución real
+
+Salida **real** de las pruebas (proveedor `gemini`, índice ya poblado), capturada
+sin editar el contenido de las respuestas. El log completo, con fecha y los
+mensajes de logging, está en [`evidencia/ejecucion_real.txt`](./evidencia/ejecucion_real.txt).
+
+```text
+$ python main.py
+Sistema RAG — proveedor de generación: gemini
+
+--- Prueba 1 · pregunta con respuesta en los documentos ---
+RESPUESTA: La tarifa estándar de alquiler incluye 200 kilómetros por día sin cargo adicional.
+FUENTES: ['data\combustible_kilometraje.txt', 'data\devolucion_cargos.txt', 'data\requisitos_alquiler.txt', 'data\seguros_coberturas.txt']
+Fragmentos usados: 4
+
+--- Prueba 2 · pregunta trampa (no está en los documentos) ---
+RESPUESTA: No tengo acceso a esa información en los documentos disponibles.
+FUENTES: ['data\combustible_kilometraje.txt', 'data\devolucion_cargos.txt', 'data\requisitos_alquiler.txt', 'data\seguros_coberturas.txt']
+Fragmentos usados: 4
+```
+
+```text
+$ python verificar.py --real        # sección 4: flujo RAG de punta a punta
+  [OK ] la pregunta real recupera fragmentos y responde
+  [OK ] la pregunta real cita los '200' km diarios - respuesta='La tarifa estándar de alquiler incluye 200 kilómetros por día sin cargo adicional.'
+  [OK ] la pregunta trampa NO alucina (declara que no tiene la info) - respuesta='No tengo acceso a esa información en los documentos disponibles.'
+
+Todos los criterios se cumplen.
+```
+
+Dos detalles que se ven en el log y conviene saber al revisarlo:
+
+- **Los `503 UNAVAILABLE` de Gemini son transitorios y se reintentan solos**
+  (`Retrying ... in 1.97 seconds`); en esa corrida las dos respuestas llegaron
+  igual. Es el comportamiento esperado del tier gratuito bajo demanda.
+- **Las rutas en `FUENTES` salen con `\`** porque la corrida fue en Windows; en
+  Linux/macOS aparecen como `data/...`.
+
+## 6. Errores comunes que el entregable evita
 
 | Error de la consigna | Cómo se evita acá |
 |---|---|
@@ -198,7 +236,7 @@ criptomonedas?*, *¿Cuál es el teléfono de la sucursal del aeropuerto?*.
 | Alucinación de fuentes | Las referencias salen de la metadata real, no del LLM |
 | Claves en el repo | `.env` (ignorado por git) + `.env.example` como plantilla |
 
-## 6. Estado de la verificación
+## 7. Estado de la verificación
 
 `python verificar.py` cubre, sin gastar cuota ni descargar el modelo de
 embeddings, los contratos Pydantic, la fábrica de modelos (rechaza proveedores
