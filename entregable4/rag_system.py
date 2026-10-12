@@ -19,7 +19,7 @@ from typing import Literal
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 
-from config import ENSEMBLE_WEIGHTS, INDEX_NAME, NAMESPACE, TOP_K, get_embeddings, get_pinecone
+from config import ENSEMBLE_WEIGHTS, INDEX_NAME, NAMESPACE, TEXT_KEY, TOP_K, get_embeddings, get_pinecone
 from schemas import Fragmento
 
 Modo = Literal["hibrido", "vectorial", "bm25"]
@@ -107,7 +107,9 @@ class RAGSystem:
                 f"No existe el índice '{INDEX_NAME}'. Ejecutá primero `python ingesta.py`."
             )
         indice = pc.Index(INDEX_NAME)
-        vectorstore = PineconeVectorStore(index=indice, embedding=get_embeddings(), namespace=NAMESPACE)
+        vectorstore = PineconeVectorStore(
+            index=indice, embedding=get_embeddings(), namespace=NAMESPACE, text_key=TEXT_KEY
+        )
         return vectorstore.as_retriever(search_kwargs={"k": k})
 
     def buscar(self, consulta: str, modo: Modo = "hibrido") -> list[Fragmento]:

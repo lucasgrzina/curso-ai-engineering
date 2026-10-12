@@ -111,12 +111,12 @@ def verificar_ingesta() -> list[Document]:
     claves = {frozenset(c.metadata) for c in chunks}
     check(
         "todos los chunks comparten el mismo esquema de metadata (sin schema drift)",
-        len(claves) == 1 and set(next(iter(claves))) == {"source", "categoria", "titulo", "pagina", "total_paginas", "chunk_id"},
+        len(claves) == 1 and set(next(iter(claves))) == {"source", "categoria", "titulo", "pagina", "total_paginas", "chunk_id", "timestamp"},
     )
     ids = [c.metadata["chunk_id"] for c in chunks]
     check("los IDs son únicos (y determinísticos: <fuente>::<n>)", len(set(ids)) == len(ids))
     check(
-        "el texto original queda disponible como page_content (se guarda en metadata['text'])",
+        "el texto original queda disponible como page_content (se guarda en metadata['content'])",
         all(c.page_content.strip() for c in chunks),
     )
 

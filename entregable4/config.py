@@ -6,9 +6,9 @@ el namespace viven acá y nada más. Así es estructuralmente imposible indexar 
 un modelo y consultar con otro, o crear el índice con una dimensión distinta de
 la que producen los vectores (el "mismatch de dimensiones" de la consigna).
 
-Los embeddings son locales (HuggingFace), como en el Entregable 3: la
-recuperación no necesita API key de ningún LLM. La única credencial obligatoria
-es `PINECONE_API_KEY`.
+Los embeddings son locales (HuggingFace) por defecto, como en el Entregable 3,
+y opcionalmente de OpenAI (`EMBEDDINGS_PROVIDER=openai`). La única credencial
+obligatoria es `PINECONE_API_KEY`.
 """
 
 from __future__ import annotations
@@ -40,11 +40,24 @@ def _env_str(name: str) -> str | None:
 # Modelo de embeddings (ÚNICO para indexar y consultar; no es configurable)
 # ---------------------------------------------------------------------------
 
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-# El índice de Pinecone debe tener EXACTAMENTE esta dimensión. (1536 es la de
-# text-embedding-3-small de OpenAI; este modelo local produce vectores de 384.)
-EMBEDDING_DIM = 384
+# Proveedor: "huggingface" (local, sin API key; por defecto) u "openai"
+# (requiere OPENAI_API_KEY). Se elige UNA vez por entorno vía EMBEDDINGS_PROVIDER.
+EMBEDDINGS_PROVIDER = (_env_str("EMBEDDINGS_PROVIDER") or "huggingface").lower()
+
+_MODELOS = {
+    # proveedor: (modelo, dimensión)
+    "huggingface": ("sentence-transformers/all-MiniLM-L6-v2", 384),
+    "openai": ("text-embedding-3-small", 1536),
+}
+if EMBEDDINGS_PROVIDER not in _MODELOS:
+    raise ValueError(f"EMBEDDINGS_PROVIDER inválido: '{EMBEDDINGS_PROVIDER}'. Usá {sorted(_MODELOS)}.")
+
+EMBEDDING_MODEL, EMBEDDING_DIM = _MODELOS[EMBEDDINGS_PROVIDER]
+# El índice de Pinecone debe tener EXACTAMENTE esta dimensión; `setup_index.py`
+# lo valida y falla con un mensaje claro si no coincide.
 METRIC = "cosine"
+# Clave de metadata donde Pinecone guarda el texto del chunk.
+TEXT_KEY = "content"
 
 # ---------------------------------------------------------------------------
 # Índice Serverless y namespace
@@ -81,11 +94,18 @@ def get_api_key() -> str:
 
 @lru_cache(maxsize=1)
 def get_embeddings():
-    """Instancia (una sola vez) el modelo de embeddings local de HuggingFace.
+    """Instancia (una sola vez) el modelo de embeddings del proveedor configurado.
 
-    La primera invocación descarga el modelo (~90 MB); las siguientes lo toman
-    de la caché local.
+    HuggingFace: la primera invocación descarga el modelo (~90 MB); las
+    siguientes lo toman de la caché local. OpenAI: exige `OPENAI_API_KEY`.
     """
+    if EMBEDDINGS_PROVIDER == "openai":
+        if not _env_str("OPENAI_API_KEY"):
+            raise ValueError("EMBEDDINGS_PROVIDER=openai requiere OPENAI_API_KEY en el .env.")
+        from langchain_openai import OpenAIEmbeddings
+
+        return OpenAIEmbeddings(model=EMBEDDING_MODEL)
+
     from langchain_huggingface import HuggingFaceEmbeddings
 
     return HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
