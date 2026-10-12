@@ -1,11 +1,13 @@
-# Ejecución real del Entregable 4 — 2026-10-07 22:44 — Windows 11, Python 3.12, Pinecone Serverless (aws/us-east-1)
+# Ejecución real del Entregable 4 — 2026-10-12 12:27 — Windows 11, Python 3.12, Pinecone Serverless (aws/us-east-1)
 
 $ python ingesta.py --reset
-2026-10-07 22:44:55,472 [INFO] setup_index: El índice 'nimbus-rag-hibrido' ya existe — no se vuelve a crear
-2026-10-07 22:44:56,460 [INFO] ingesta: --reset: vaciando el namespace 'nimbus-docs'
-2026-10-07 22:44:56,770 [INFO] ingesta: Documentos cargados: 6
-2026-10-07 22:44:56,972 [INFO] ingesta: Fragmentos generados: 20 (a partir de 6 documentos)
-2026-10-07 22:45:13,699 [INFO] ingesta: Upsert: 20/20 vectores
+2026-10-12 12:27:24,186 [INFO] setup_index: El índice 'nimbus-rag-hibrido' ya existe — no se vuelve a crear
+2026-10-12 12:27:25,211 [INFO] ingesta: --reset: vaciando el namespace 'nimbus-docs'
+2026-10-12 12:27:25,544 [INFO] ingesta: Documentos cargados: 6
+2026-10-12 12:27:25,914 [INFO] ingesta: Fragmentos generados: 20 (a partir de 6 documentos)
+2026-10-12 12:27:33,638 [INFO] sentence_transformers.base.model: No device provided, using cpu
+2026-10-12 12:27:33,658 [INFO] sentence_transformers.base.model: Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2.
+2026-10-12 12:27:35,402 [INFO] ingesta: Upsert: 20/20 vectores
 
 Ingesta lista: 20 vector(es) en el namespace 'nimbus-docs' del índice 'nimbus-rag-hibrido'.
 
@@ -89,7 +91,7 @@ Verificación del Entregable 4 - RAG escalable con Pinecone
   [OK ] el chunking genera más de un fragmento por documento en promedio - 20 chunks
   [OK ] todos los chunks comparten el mismo esquema de metadata (sin schema drift)
   [OK ] los IDs son únicos (y determinísticos: <fuente>::<n>)
-  [OK ] el texto original queda disponible como page_content (se guarda en metadata['text'])
+  [OK ] el texto original queda disponible como page_content (se guarda en metadata['content'])
   [OK ] el batch upsert parte 250 vectores en lotes 100/100/50 - [100, 100, 50]
 
 3. Recuperador híbrido (rag_system.py)
@@ -124,3 +126,4 @@ Verificación del Entregable 4 - RAG escalable con Pinecone
 
 ========================================================================
 Todos los criterios se cumplen.
+
