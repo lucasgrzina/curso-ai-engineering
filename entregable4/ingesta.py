@@ -8,9 +8,10 @@ Puntos de diseño alineados con la consigna:
 
 - **Metadata avanzada con el texto adentro.** Cada vector lleva `source`,
   `categoria`, `titulo`, `pagina`, `total_paginas` y `chunk_id`, además del texto
-  original (`text`). Con una sola consulta a Pinecone se recupera vector + texto +
+  original (`content`). Con una sola consulta a Pinecone se recupera vector + texto +
   fuente, sin ir a una base relacional aparte. Los nombres de metadata están
-  fijos en `construir_metadata` para evitar el *schema drift*.
+  fijos en `construir_metadata` para evitar el *schema drift*. Incluye también
+  `timestamp` (epoch numérico) para filtrado avanzado por fecha de ingesta.
 - **IDs determinísticos** (`<fuente>::<n>`): reingestar el mismo corpus
   *sobrescribe* los vectores en vez de duplicarlos (el upsert es idempotente).
 - **Batch upsert de 100 vectores**, el punto dulce entre velocidad y estabilidad,
@@ -23,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import time
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -36,6 +38,7 @@ from config import (
     DATA_DIR,
     INDEX_NAME,
     NAMESPACE,
+    TEXT_KEY,
     consola_utf8,
     get_embeddings,
 )
@@ -91,6 +94,8 @@ def construir_metadata(chunk: Document, pagina: int, total_paginas: int) -> dict
         "pagina": pagina,
         "total_paginas": total_paginas,
         "chunk_id": f"{fuente}::{pagina}",
+        # Epoch en segundos (numérico) para filtrar con $gte/$lte en Pinecone.
+        "timestamp": int(time.time()),
     }
 
 
@@ -136,11 +141,13 @@ def ingestar(reset: bool = False) -> int:
             indice.delete(delete_all=True, namespace=NAMESPACE)
 
     chunks = preparar_chunks()
-    vectorstore = PineconeVectorStore(index=indice, embedding=get_embeddings(), namespace=NAMESPACE)
+    vectorstore = PineconeVectorStore(
+        index=indice, embedding=get_embeddings(), namespace=NAMESPACE, text_key=TEXT_KEY
+    )
 
     subidos = 0
     for lote in lotes(chunks, BATCH_SIZE):
-        # `add_documents` embebe el lote y guarda el texto en metadata["text"].
+        # `add_documents` embebe el lote y guarda el texto en metadata["content"].
         vectorstore.add_documents(
             lote, ids=[c.metadata["chunk_id"] for c in lote], batch_size=BATCH_SIZE
         )

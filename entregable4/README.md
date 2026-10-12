@@ -19,9 +19,10 @@ for f in rag.buscar("¿Qué significa ERR_TLS_4021?"):
     print(f.fuente, f.pagina, f.contenido[:80])
 ```
 
-**Embeddings 100% locales** (HuggingFace `all-MiniLM-L6-v2`, **384 dimensiones**),
-igual que en el Entregable 3. Este módulo solo *recupera*: no llama a ningún LLM,
-así que la **única credencial** es `PINECONE_API_KEY`.
+**Embeddings locales por defecto** (HuggingFace `all-MiniLM-L6-v2`, **384 dimensiones**),
+igual que en el Entregable 3, u **OpenAI** (`text-embedding-3-small`, 1536 dimensiones)
+con `EMBEDDINGS_PROVIDER=openai`. Este módulo solo *recupera*: no llama a ningún LLM
+de generación, así que la única credencial obligatoria es `PINECONE_API_KEY`.
 
 ---
 
@@ -69,6 +70,8 @@ Viven en `.env` (ignorado por git); plantilla en `.env.example`.
 | Variable | Obligatoria | Default | Para qué sirve |
 |---|---|---|---|
 | `PINECONE_API_KEY` | **sí** | — | [app.pinecone.io](https://app.pinecone.io) (plan gratuito) |
+| `OPENAI_API_KEY` | solo con `EMBEDDINGS_PROVIDER=openai` | — | [platform.openai.com](https://platform.openai.com/api-keys) |
+| `EMBEDDINGS_PROVIDER` | no | `huggingface` | `huggingface` (384 dim) u `openai` (1536 dim; usá otro `INDEX_NAME`) |
 | `INDEX_NAME` | no | `nimbus-rag-hibrido` | Nombre del índice Serverless |
 | `PINECONE_NAMESPACE` | no | `nimbus-docs` | Namespace dentro del índice |
 | `PINECONE_CLOUD` / `PINECONE_REGION` | no | `aws` / `us-east-1` | Dónde se crea el índice |
@@ -107,8 +110,9 @@ vectores de 1536 a un índice de 768) no aparece recién en el primer upsert.
   documento, que por construcción es más corta que el resto.
 - **Metadata avanzada con el texto adentro**: cada vector guarda `source`
   (ruta relativa, es el `documento_id`), `categoria` (la carpeta), `titulo`,
-  `pagina` (posición del chunk en el documento), `total_paginas`, `chunk_id` y
-  el **texto original** en `text`. Una sola consulta a Pinecone devuelve vector,
+  `pagina` (posición del chunk en el documento), `total_paginas`, `chunk_id`,
+  `timestamp` (epoch numérico, para filtrar por fecha de ingesta) y el
+  **texto original** en `content`. Una sola consulta a Pinecone devuelve vector,
   texto y fuente, sin base relacional aparte. Los nombres están fijos en
   `construir_metadata` para evitar el *schema drift*.
 - **Batch upsert de 100 vectores** en vez de vector a vector (menos overhead de red).
