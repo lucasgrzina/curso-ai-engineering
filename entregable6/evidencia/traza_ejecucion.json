@@ -1,0 +1,78 @@
+[
+  {
+    "titulo": "Escenario 1: delegación investigador -> analista -> síntesis",
+    "pregunta": "Un empleado cumple 12 años en TechCorp. Sus primeros 5 años tuvo derecho a 14 días de vacaciones por año, los siguientes 5 años a 21 por año, y los últimos 2 a 28 por año. Confirmá esos valores en la política y calculá cuántos días de vacaciones acumuló en total.",
+    "agentes_en_orden": [
+      "investigador",
+      "analista"
+    ],
+    "traza": [
+      {
+        "nodo": "supervisor",
+        "decision": "investigador",
+        "instruccion": "Verifica en la política interna de TechCorp que los empleados reciben 14 días de vacaciones por año durante los primeros 5 años, 21 días por año durante los siguientes 5 años y 28 días por año durante los últimos 2 años.",
+        "razon": "Se necesita confirmar la política y calcular el total de días.",
+        "motivo_fin": ""
+      },
+      {
+        "nodo": "investigador",
+        "aporte": "Los empleados de TechCorp reciben:\n\n- 14 días de vacaciones por año cuando tienen menos de 5 años de antigüedad.  \n- 21 días de vacaciones por año cuando tienen entre 5 y 10 años de antigüedad.  \n- 28 días de vacaciones por año cuando tienen más de 10 años de antigüedad.  \n\n[Fuente: política_vacaciones.txt]"
+      },
+      {
+        "nodo": "supervisor",
+        "decision": "analista",
+        "instruccion": "Calcula 5*14 + 5*21 + 2*28 = 231",
+        "razon": "Se requiere cálculo para obtener el total de días de vacaciones acumulados.",
+        "motivo_fin": ""
+      },
+      {
+        "nodo": "analista",
+        "aporte": "**Cálculo:**\n\n\\[\n5 \\times 14 \\;+\\; 5 \\times 21 \\;+\\; 2 \\times 28\n\\]\n\n1. \\(5 \\times 14 = 70\\)  \n2. \\(5 \\times 21 = 105\\)  \n3. \\(2 \\times 28 = 56\\)\n\nSumamos los resultados:\n\n\\[\n70 + 105 + 56 = 231\n\\]\n\n**Resultado final:** **231**"
+      },
+      {
+        "nodo": "supervisor",
+        "decision": "FINISH",
+        "instruccion": "",
+        "razon": "All rubric points satisfied: investigator provided concrete data with source, analyst provided calculation with result, numbers match, and the result answers the question.",
+        "motivo_fin": "suficiente"
+      },
+      {
+        "nodo": "sintesis",
+        "aporte": "Según la política de vacaciones de TechCorp:\n\n- 14 días por año cuando la antigüedad es menor a 5 años.  \n- 21 días por año cuando la antigüedad está entre 5 y 10 años.  \n- 28 días por año cuando la antigüedad supera los 10 años.  \n\nPara un empleado con 12 años de servicio:\n\n\\[\n5 \\times 14 \\;+\\; 5 \\times 21 \\;+\\; 2 \\times 28 = 70 + 105 + 56 = 231\n\\]\n\n**Total acumulado:** **231 días de vacaciones**."
+      }
+    ],
+    "respuesta_final": "Según la política de vacaciones de TechCorp:\n\n- 14 días por año cuando la antigüedad es menor a 5 años.  \n- 21 días por año cuando la antigüedad está entre 5 y 10 años.  \n- 28 días por año cuando la antigüedad supera los 10 años.  \n\nPara un empleado con 12 años de servicio:\n\n\\[\n5 \\times 14 \\;+\\; 5 \\times 21 \\;+\\; 2 \\times 28 = 70 + 105 + 56 = 231\n\\]\n\n**Total acumulado:** **231 días de vacaciones**."
+  },
+  {
+    "titulo": "Escenario 2: un solo dominio (el Supervisor no debe llamar al analista)",
+    "pregunta": "¿Cada cuántos días hay que renovar las contraseñas en TechCorp y es obligatorio el 2FA?",
+    "agentes_en_orden": [
+      "investigador"
+    ],
+    "traza": [
+      {
+        "nodo": "supervisor",
+        "decision": "investigador",
+        "instruccion": "",
+        "razon": "Se requiere información concreta de la política interna de TechCorp sobre renovación de contraseñas y obligatoriedad de 2FA, la cual aún no ha sido proporcionada.",
+        "motivo_fin": ""
+      },
+      {
+        "nodo": "investigador",
+        "aporte": "- Las contraseñas deben renovarse cada **90 días**.  \n- El **2FA** es obligatorio en todos los sistemas internos.  \n\n(Fuente: política_seguridad_informatica.txt)"
+      },
+      {
+        "nodo": "supervisor",
+        "decision": "FINISH",
+        "instruccion": "",
+        "razon": "Se cumplió R1: el investigador aportó datos concretos con fuente, y la respuesta cubre exactamente la pregunta sin requerir cálculo.",
+        "motivo_fin": "suficiente"
+      },
+      {
+        "nodo": "sintesis",
+        "aporte": "Las contraseñas deben renovarse cada **90 días** y el **2FA** es obligatorio en todos los sistemas internos."
+      }
+    ],
+    "respuesta_final": "Las contraseñas deben renovarse cada **90 días** y el **2FA** es obligatorio en todos los sistemas internos."
+  }
+]

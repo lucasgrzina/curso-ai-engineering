@@ -1,0 +1,67 @@
+
+==============================================================================
+Escenario 1: delegación investigador -> analista -> síntesis
+==============================================================================
+Pregunta: Un empleado cumple 12 años en TechCorp. Sus primeros 5 años tuvo derecho a 14 días de vacaciones por año, los siguientes 5 años a 21 por año, y los últimos 2 a 28 por año. Confirmá esos valores en la política y calculá cuántos días de vacaciones acumuló en total.
+
+[supervisor] -> investigador | Se necesita confirmar la política y calcular el total de días.
+             instrucción: Verifica en la política interna de TechCorp que los empleados reciben 14 días de vacaciones por año durante los primeros 5 años, 21 días por año durante los siguientes 5 años y 28 días por año durante los últimos 2 años.
+[investigador] Los empleados de TechCorp reciben:
+
+- 14 días de vacaciones por año cuando tienen menos de 5 años de antigüedad.  
+- 21 días de vacaciones por año cuando tienen entre 5 y 10 años de antigüedad.  
+- 28 días de vacaciones por año cuando tienen más de 10 años de antigüedad.  
+
+[Fuente: política_vacaciones.txt]
+[supervisor] -> analista | Se requiere cálculo para obtener el total de días de vacaciones acumulados.
+             instrucción: Calcula 5*14 + 5*21 + 2*28 = 231
+[analista] **Cálculo:**
+
+\[
+5 \times 14 \;+\; 5 \times 21 \;+\; 2 \times 28
+\]
+
+1. \(5 \times 14 = 70\)  
+2. \(5 \times 21 = 105\)  
+3. \(2 \times 28 = 56\)
+
+Sumamos los resultados:
+
+\[
+70 + 105 + 56 = 231
+\]
+
+**Resultado final:** **231**
+[supervisor] -> FINISH | All rubric points satisfied: investigator provided concrete data with source, analyst provided calculation with result, numbers match, and the result answers the question.
+[sintesis] Según la política de vacaciones de TechCorp:
+
+- 14 días por año cuando la antigüedad es menor a 5 años.  
+- 21 días por año cuando la antigüedad está entre 5 y 10 años.  
+- 28 días por año cuando la antigüedad supera los 10 años.  
+
+Para un empleado con 12 años de servicio:
+
+\[
+5 \times 14 \;+\; 5 \times 21 \;+\; 2 \times 28 = 70 + 105 + 56 = 231
+\]
+
+**Total acumulado:** **231 días de vacaciones**.
+
+Agentes que intervinieron (en orden): ['investigador', 'analista']
+
+==============================================================================
+Escenario 2: un solo dominio (el Supervisor no debe llamar al analista)
+==============================================================================
+Pregunta: ¿Cada cuántos días hay que renovar las contraseñas en TechCorp y es obligatorio el 2FA?
+
+[supervisor] -> investigador | Se requiere información concreta de la política interna de TechCorp sobre renovación de contraseñas y obligatoriedad de 2FA, la cual aún no ha sido proporcionada.
+[investigador] - Las contraseñas deben renovarse cada **90 días**.  
+- El **2FA** es obligatorio en todos los sistemas internos.  
+
+(Fuente: política_seguridad_informatica.txt)
+[supervisor] -> FINISH | Se cumplió R1: el investigador aportó datos concretos con fuente, y la respuesta cubre exactamente la pregunta sin requerir cálculo.
+[sintesis] Las contraseñas deben renovarse cada **90 días** y el **2FA** es obligatorio en todos los sistemas internos.
+
+Agentes que intervinieron (en orden): ['investigador']
+
+Evidencia escrita en evidencia/ (ejecucion.log, traza_ejecucion.json, grafo.mmd)
