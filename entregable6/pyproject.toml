@@ -1,0 +1,14 @@
+[project]
+name = "orquestador-multi-agente"
+version = "1.0.0"
+description = "Entregable 6 - Orquestador multi-agente jerárquico (Supervisor + Investigador + Analista) con LangGraph"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "langchain-core>=0.3",
+    "langchain-openai>=0.3",
+    "langchain-anthropic>=0.3",
+    "langchain-google-genai>=2.1",
+    "langgraph>=0.6",
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+]
