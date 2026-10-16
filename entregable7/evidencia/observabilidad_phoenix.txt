@@ -1,0 +1,31 @@
+EVIDENCIA DE OBSERVABILIDAD — Arize Phoenix (proyecto: entregable7-orquestador)
+================================================================================
+Capturada tras correr `python prueba_carga.py --n 5` (5 peticiones concurrentes)
+con la API levantada (uvicorn) + Redis Stack + Phoenix, todo local.
+
+Consulta a la API GraphQL de Phoenix (http://localhost:6006/graphql):
+
+  traceCount          : 26
+  tokenCountTotal     : 59714
+  tokenCountPrompt    : 41113
+  tokenCountCompletion: 18601
+
+Las trazas incluyen un span por cada nodo del grafo y por cada llamada al LLM /
+herramienta. Nombres de spans observados (muestra):
+
+  - LangGraph            (la ejecución completa del grafo)
+  - supervisor           (nodo Supervisor)
+  - enrutar              (arista condicional hacia investigador/aprobacion/sintesis)
+  - agent / call_model   (agente ReAct del especialista)
+  - buscar_en_politicas  (herramienta del investigador)
+  - tools                (ejecución de herramientas)
+  - ChatOpenAI           (llamada al LLM, con tokens de entrada/salida)
+  - Prompt / RunnableSequence / RunnableLambda
+
+El costo por ejecución y la latencia p95 se leen en el dashboard de Phoenix, que
+los calcula a partir de estos tokens. Esas lecturas van como capturas en
+/screenshots (ver screenshots/README.md).
+
+Cómo reproducir:
+  curl -s -X POST http://localhost:6006/graphql -H "Content-Type: application/json" \
+    -d '{"query":"query{projects{edges{node{name traceCount tokenCountTotal tokenCountPrompt tokenCountCompletion}}}}"}'

@@ -1,0 +1,53 @@
+# Stack completo del Entregable 7: Redis Stack + Arize Phoenix + la API.
+#
+#   docker compose up --build
+#
+# - redis   : Redis Stack (incluye RediSearch, que necesita el RedisSaver de LangGraph).
+# - phoenix : dashboard de observabilidad en http://localhost:6006
+# - api     : la API FastAPI en http://localhost:8000 (docs en /docs)
+#
+# La clave del LLM se toma del archivo .env (no se versiona).
+
+services:
+  redis:
+    image: redis/redis-stack:7.4.0-v0
+    ports:
+      - "6379:6379"   # Redis
+      - "8001:8001"   # RedisInsight (UI opcional)
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  phoenix:
+    image: arizephoenix/phoenix:version-7.9.0
+    ports:
+      - "6006:6006"   # UI + colector OTLP (http)
+    environment:
+      - PHOENIX_WORKING_DIR=/data
+    volumes:
+      - phoenix-data:/data
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - OBSERVABILITY=phoenix
+      - PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:6006
+    depends_on:
+      redis:
+        condition: service_healthy
+      phoenix:
+        condition: service_started
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+volumes:
+  redis-data:
+  phoenix-data:

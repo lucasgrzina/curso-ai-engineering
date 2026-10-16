@@ -1,0 +1,14 @@
+API OK -> {'status': 'ok', 'redis': True, 'observabilidad': 'phoenix'}
+
+Lanzando 5 peticiones concurrentes...
+  tarea 1: FAILED en 35.2s (job f537daf1)
+  tarea 5: FAILED en 43.0s (job 3a6e43c4)
+  tarea 4: DONE en 57.6s (job 850ed225)
+  tarea 3: DONE en 68.6s (job b75bf174)
+  tarea 2: FAILED en 72.7s (job 42cbbac1)
+
+============================================================
+Concurrencia: 5 | Terminadas DONE: 2/5 | Tiempo total de la corrida: 72.7s
+Latencia extremo a extremo (cliente): min=35.2s  mediana=57.6s  p95=72.7s  max=72.7s
+La p95 y el costo por ejecución oficiales están en el dashboard de observabilidad.
+============================================================
