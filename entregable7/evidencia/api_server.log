@@ -1,0 +1,349 @@
+2026-10-16 20:23:15,428 observabilidad INFO Phoenix activo -> proyecto 'entregable7-orquestador' endpoint http://localhost:6006/v1/traces
+2026-10-16 20:23:15,428 api INFO Observabilidad: phoenix
+2026-10-16 20:23:15,615 langgraph.checkpoint.redis INFO Redis client is a standalone client
+2026-10-16 20:23:15,617 redisvl.index.index INFO Index already exists, not overwriting.
+2026-10-16 20:23:15,620 redisvl.index.index INFO Index already exists, not overwriting.
+2026-10-16 20:23:17,141 api INFO Grafo compilado y checkpointer Redis listo (redis://localhost:6379/0).
+2026-10-16 20:23:27,695 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:27,756 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:27,820 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,011 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,089 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,369 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,377 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,430 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,668 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:28,697 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:29,123 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:29,123 openai._base_client INFO Retrying request in 4.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:29,173 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:29,181 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:29,181 openai._base_client INFO Retrying request in 2.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:29,207 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:29,241 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:29,590 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:29,593 openai._base_client INFO Retrying request in 2.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:29,642 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:29,651 openai._base_client INFO Retrying request in 2.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:29,659 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:29,659 openai._base_client INFO Retrying request in 1.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:30,721 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:30,721 openai._base_client INFO Retrying request in 1.000000 seconds (retry 2 of 8)
+2026-10-16 20:23:31,666 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:31,666 openai._base_client INFO Retrying request in 6.000000 seconds (retry 2 of 8)
+2026-10-16 20:23:31,715 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:31,715 openai._base_client INFO Retrying request in 5.000000 seconds (retry 2 of 8)
+2026-10-16 20:23:31,724 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:31,781 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:31,781 openai._base_client INFO Retrying request in 5.000000 seconds (retry 3 of 8)
+2026-10-16 20:23:32,140 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:32,141 openai._base_client INFO Retrying request in 3.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:33,578 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:33,994 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:33,994 openai._base_client INFO Retrying request in 7.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:35,199 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:35,199 openai._base_client INFO Retrying request in 6.000000 seconds (retry 2 of 8)
+2026-10-16 20:23:36,801 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:36,801 openai._base_client INFO Retrying request in 4.000000 seconds (retry 3 of 8)
+2026-10-16 20:23:36,878 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:36,878 openai._base_client INFO Retrying request in 4.000000 seconds (retry 4 of 8)
+2026-10-16 20:23:37,730 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:37,730 openai._base_client INFO Retrying request in 3.000000 seconds (retry 3 of 8)
+2026-10-16 20:23:40,859 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:40,861 openai._base_client INFO Retrying request in 7.000000 seconds (retry 4 of 8)
+2026-10-16 20:23:40,940 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:40,940 openai._base_client INFO Retrying request in 7.000000 seconds (retry 5 of 8)
+2026-10-16 20:23:41,063 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:41,063 openai._base_client INFO Retrying request in 6.000000 seconds (retry 2 of 8)
+2026-10-16 20:23:41,262 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:41,262 openai._base_client INFO Retrying request in 4.000000 seconds (retry 3 of 8)
+2026-10-16 20:23:41,344 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:41,662 worker INFO [42cbbac1996942bf80f7a1d69a25dec4] pausado en HITL: esperando aprobación humana.
+2026-10-16 20:23:42,036 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:42,036 openai._base_client INFO Retrying request in 3.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:45,333 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:45,335 openai._base_client INFO Retrying request in 8.000000 seconds (retry 4 of 8)
+2026-10-16 20:23:45,530 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:45,995 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:45,995 openai._base_client INFO Retrying request in 3.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:47,122 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:47,122 openai._base_client INFO Retrying request in 5.000000 seconds (retry 3 of 8)
+2026-10-16 20:23:47,924 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:47,924 openai._base_client INFO Retrying request in 3.000000 seconds (retry 5 of 8)
+2026-10-16 20:23:47,999 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:47,999 openai._base_client INFO Retrying request in 5.000000 seconds (retry 6 of 8)
+2026-10-16 20:23:49,789 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:50,203 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:50,204 openai._base_client INFO Retrying request in 4.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:50,986 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:50,986 openai._base_client INFO Retrying request in 3.000000 seconds (retry 6 of 8)
+2026-10-16 20:23:52,185 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:52,185 openai._base_client INFO Retrying request in 1.000000 seconds (retry 4 of 8)
+2026-10-16 20:23:53,058 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:53,058 openai._base_client INFO Retrying request in 1.000000 seconds (retry 7 of 8)
+2026-10-16 20:23:53,463 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:53,463 openai._base_client INFO Retrying request in 8.000000 seconds (retry 5 of 8)
+2026-10-16 20:23:53,980 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:23:54,054 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:54,054 openai._base_client INFO Retrying request in 9.000000 seconds (retry 7 of 8)
+2026-10-16 20:23:54,129 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:54,130 openai._base_client INFO Retrying request in 7.000000 seconds (retry 8 of 8)
+2026-10-16 20:23:54,266 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:54,266 openai._base_client INFO Retrying request in 9.000000 seconds (retry 2 of 8)
+2026-10-16 20:23:54,350 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:54,350 openai._base_client INFO Retrying request in 5.000000 seconds (retry 1 of 8)
+2026-10-16 20:23:59,471 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:23:59,471 openai._base_client INFO Retrying request in 1.000000 seconds (retry 2 of 8)
+2026-10-16 20:24:00,751 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:01,250 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:01,467 worker ERROR [f537daf191d74b3eae3bb81461b9df1e] falló la ejecución.
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1955, in _generate
+    self.root_client.chat.completions.with_raw_response.parse(**payload)
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_legacy_response.py", line 369, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 194, in parse
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_base_client.py", line 1440, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_base_client.py", line 1213, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01m4y1w194ec0r3ddjmyqed48h` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7898, Requested 1272. Please try again in 8.774999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\entregable7\app\worker.py", line 60, in ejecutar_tarea
+    resultado = app.invoke(estado_inicial(pregunta), config=_config_hilo(job_id))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\main.py", line 4001, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3058, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 208, in tick
+    run_with_retry(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 707, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 447, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\supervisor.py", line 126, in nodo
+    decision = decidir(state)
+               ^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\supervisor.py", line 92, in decidir
+    return llm_estructurado.invoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3458, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6018, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 488, in invoke
+    self.generate_prompt(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1877, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1684, in generate
+    self._generate_with_cache(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2022, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1997, in _generate
+    _handle_openai_api_error(e)
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 736, in _handle_openai_api_error
+    raise OpenAIRateLimitError(
+langchain_openai.chat_models.base.OpenAIRateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01m4y1w194ec0r3ddjmyqed48h` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7898, Requested 1272. Please try again in 8.774999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+During task with name 'supervisor' and id 'e400d3bf-b250-cac2-176d-ac894b25b5d9'
+2026-10-16 20:24:01,520 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:01,520 openai._base_client INFO Retrying request in 9.000000 seconds (retry 6 of 8)
+2026-10-16 20:24:01,528 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:01,939 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:01,953 openai._base_client INFO Retrying request in 7.000000 seconds (retry 1 of 8)
+2026-10-16 20:24:03,122 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:03,122 openai._base_client INFO Retrying request in 6.000000 seconds (retry 8 of 8)
+2026-10-16 20:24:03,324 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:03,324 openai._base_client INFO Retrying request in 6.000000 seconds (retry 3 of 8)
+2026-10-16 20:24:09,232 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:09,381 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:09,381 openai._base_client INFO Retrying request in 9.000000 seconds (retry 4 of 8)
+2026-10-16 20:24:09,398 worker ERROR [3a6e43c418f84685bc84883a9cc1098c] falló la ejecución.
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1955, in _generate
+    self.root_client.chat.completions.with_raw_response.parse(**payload)
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_legacy_response.py", line 369, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 194, in parse
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_base_client.py", line 1440, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_base_client.py", line 1213, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01m4y1w194ec0r3ddjmyqed48h` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7872, Requested 1246. Please try again in 8.385s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\entregable7\app\worker.py", line 60, in ejecutar_tarea
+    resultado = app.invoke(estado_inicial(pregunta), config=_config_hilo(job_id))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\main.py", line 4001, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3058, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 208, in tick
+    run_with_retry(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 707, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 447, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\supervisor.py", line 126, in nodo
+    decision = decidir(state)
+               ^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\supervisor.py", line 92, in decidir
+    return llm_estructurado.invoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3458, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6018, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 488, in invoke
+    self.generate_prompt(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1877, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1684, in generate
+    self._generate_with_cache(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2022, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1997, in _generate
+    _handle_openai_api_error(e)
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 736, in _handle_openai_api_error
+    raise OpenAIRateLimitError(
+langchain_openai.chat_models.base.OpenAIRateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01m4y1w194ec0r3ddjmyqed48h` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7872, Requested 1246. Please try again in 8.385s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+During task with name 'supervisor' and id '6b340400-eb6f-1972-9d4d-3c7883750304'
+2026-10-16 20:24:09,595 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:09,941 worker INFO [b75bf1747a734782a5cadd6103476458] pausado en HITL: esperando aprobación humana.
+2026-10-16 20:24:10,572 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:10,572 openai._base_client INFO Retrying request in 1.000000 seconds (retry 1 of 8)
+2026-10-16 20:24:10,586 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:10,586 openai._base_client INFO Retrying request in 4.000000 seconds (retry 7 of 8)
+2026-10-16 20:24:12,097 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:13,028 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:13,441 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:13,443 openai._base_client INFO Retrying request in 6.000000 seconds (retry 1 of 8)
+2026-10-16 20:24:14,653 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:14,653 openai._base_client INFO Retrying request in 4.000000 seconds (retry 8 of 8)
+2026-10-16 20:24:18,456 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:18,457 openai._base_client INFO Retrying request in 1.000000 seconds (retry 5 of 8)
+2026-10-16 20:24:19,351 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:19,506 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:19,506 openai._base_client INFO Retrying request in 8.000000 seconds (retry 2 of 8)
+2026-10-16 20:24:19,579 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:19,580 openai._base_client INFO Retrying request in 8.000000 seconds (retry 6 of 8)
+2026-10-16 20:24:19,631 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:19,631 openai._base_client INFO Retrying request in 4.000000 seconds (retry 1 of 8)
+2026-10-16 20:24:24,141 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:24,294 worker INFO [850ed2252d274c4dac3e3f2a6bb9bbdb] DONE.
+2026-10-16 20:24:27,571 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:27,571 openai._base_client INFO Retrying request in 4.000000 seconds (retry 3 of 8)
+2026-10-16 20:24:27,641 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:27,641 openai._base_client INFO Retrying request in 4.000000 seconds (retry 7 of 8)
+2026-10-16 20:24:31,773 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:31,773 openai._base_client INFO Retrying request in 7.000000 seconds (retry 8 of 8)
+2026-10-16 20:24:32,281 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:32,559 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:32,559 openai._base_client INFO Retrying request in 2.000000 seconds (retry 1 of 8)
+2026-10-16 20:24:34,968 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-16 20:24:35,162 worker INFO [b75bf1747a734782a5cadd6103476458] DONE.
+2026-10-16 20:24:38,845 httpx2 INFO HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-16 20:24:39,046 worker ERROR [42cbbac1996942bf80f7a1d69a25dec4] falló la reanudación.
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1955, in _generate
+    self.root_client.chat.completions.with_raw_response.parse(**payload)
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_legacy_response.py", line 369, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 194, in parse
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_base_client.py", line 1440, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\openai\_base_client.py", line 1213, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01m4y1w194ec0r3ddjmyqed48h` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7102, Requested 1291. Please try again in 2.9475s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\entregable7\app\worker.py", line 71, in reanudar_tarea
+    resultado = app.invoke(
+                ^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\main.py", line 4001, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3058, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 208, in tick
+    run_with_retry(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 707, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 447, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\supervisor.py", line 126, in nodo
+    decision = decidir(state)
+               ^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\supervisor.py", line 92, in decidir
+    return llm_estructurado.invoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3458, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6018, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 488, in invoke
+    self.generate_prompt(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1877, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1684, in generate
+    self._generate_with_cache(
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2022, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1997, in _generate
+    _handle_openai_api_error(e)
+  File "C:\laragon\www\ia\curso\entregable7\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 736, in _handle_openai_api_error
+    raise OpenAIRateLimitError(
+langchain_openai.chat_models.base.OpenAIRateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01m4y1w194ec0r3ddjmyqed48h` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7102, Requested 1291. Please try again in 2.9475s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+During task with name 'supervisor' and id 'fa4d37c6-cafc-54c5-5b81-288d9491001c'

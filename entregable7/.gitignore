@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+# Datos locales de Phoenix / Redis si se corren fuera de docker
+.phoenix/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
