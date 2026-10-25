@@ -18,6 +18,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
+from app import costos
+
 
 class Estado(str, Enum):
     PENDING = "PENDING"
@@ -41,6 +43,7 @@ class Job:
     resultado: dict[str, Any] | None = None
     error: str | None = None
     aprobacion: dict[str, Any] | None = None  # payload del interrupt (motivo, instrucción)
+    costo: dict[str, Any] | None = None  # tokens + costo USD acumulado (ver app/costos.py)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -52,6 +55,7 @@ class Job:
             "resultado": self.resultado,
             "error": self.error,
             "aprobacion": self.aprobacion,
+            "costo": self.costo,
         }
 
 
@@ -77,6 +81,7 @@ class JobStore:
             "resultado": json.dumps(job.resultado, ensure_ascii=False) if job.resultado is not None else "",
             "error": job.error or "",
             "aprobacion": json.dumps(job.aprobacion, ensure_ascii=False) if job.aprobacion is not None else "",
+            "costo": json.dumps(job.costo, ensure_ascii=False) if job.costo is not None else "",
         }
         key = self._key(job.id)
         self._r.hset(key, mapping=campos)
@@ -114,6 +119,29 @@ class JobStore:
         job.error = error
         self._guardar(job)
 
+    def sumar_costo(self, job_id: str, uso_por_modelo: dict[str, dict]) -> None:
+        """Acumula los tokens de un `invoke` al costo del job y recalcula el USD.
+
+        Se llama tras cada corrida del grafo (ejecución y reanudación HITL), de
+        modo que el costo del job refleje TODAS las llamadas al LLM. Un `uso`
+        vacío (p. ej. en tests con dobles, sin LLM real) no altera nada.
+        """
+        prev_modelos = (self.obtener(job_id).costo or {}).get("modelos", {})
+        prev_tokens = {
+            modelo: {
+                "input_tokens": d.get("input_tokens", 0),
+                "output_tokens": d.get("output_tokens", 0),
+                "total_tokens": d.get("total_tokens", 0),
+            }
+            for modelo, d in prev_modelos.items()
+        }
+        fusionado = costos.fusionar(prev_tokens, uso_por_modelo or {})
+        if not fusionado:
+            return  # nada que registrar (sin llamadas al LLM)
+        job = self.obtener(job_id)
+        job.costo = costos.resumen_de_costo(fusionado)
+        self._guardar(job)
+
     # -- lectura ----------------------------------------------------------
 
     def existe(self, job_id: str) -> bool:
@@ -133,6 +161,7 @@ class JobStore:
             resultado=json.loads(datos["resultado"]) if datos.get("resultado") else None,
             error=datos.get("error") or None,
             aprobacion=json.loads(datos["aprobacion"]) if datos.get("aprobacion") else None,
+            costo=json.loads(datos["costo"]) if datos.get("costo") else None,
         )
 
 

@@ -24,6 +24,7 @@ class EstadoTarea(BaseModel):
     resultado: dict[str, Any] | None = None
     error: str | None = None
     aprobacion: dict[str, Any] | None = None
+    costo: dict[str, Any] | None = None  # tokens + costo USD acumulado (monitoreo de costos)
 
 
 class Aprobacion(BaseModel):

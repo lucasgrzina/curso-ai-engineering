@@ -1,0 +1,60 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0 -- C:\laragon\www\ia\curso\entregable7\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\laragon\www\ia\curso\entregable7
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1, langsmith-0.14.11
+collecting ... collected 49 items
+
+tests/test_api.py::test_crear_tarea_devuelve_202_y_termina_en_done PASSED [  2%]
+tests/test_api.py::test_flujo_hitl_pausa_aprueba_y_termina PASSED        [  4%]
+tests/test_api.py::test_rechazo_hitl_cierra_sin_calcular PASSED          [  6%]
+tests/test_api.py::test_get_de_job_inexistente_da_404 PASSED             [  8%]
+tests/test_api.py::test_approve_de_job_inexistente_da_404 PASSED         [ 10%]
+tests/test_api.py::test_approve_sobre_job_terminal_da_409 PASSED         [ 12%]
+tests/test_api.py::test_approve_sobre_job_que_no_espera_aprobacion_da_409 PASSED [ 14%]
+tests/test_api.py::test_crear_tarea_valida_pregunta_minima PASSED        [ 16%]
+tests/test_api.py::test_health_responde_aunque_no_haya_redis PASSED      [ 18%]
+tests/test_costos.py::test_normaliza_modelo_quita_prefijo_de_proveedor PASSED [ 20%]
+tests/test_costos.py::test_precio_prefijo_mas_especifico_gana PASSED     [ 22%]
+tests/test_costos.py::test_modelo_desconocido_sin_precio PASSED          [ 24%]
+tests/test_costos.py::test_costo_usd_calcula_desde_tokens PASSED         [ 26%]
+tests/test_costos.py::test_override_por_entorno_fuerza_precio_de_cualquier_modelo PASSED [ 28%]
+tests/test_costos.py::test_resumen_costo_groq_ahora_tiene_usd PASSED     [ 30%]
+tests/test_costos.py::test_resumen_vacio_es_neutral PASSED               [ 32%]
+tests/test_costos.py::test_resumen_parcial_cuando_un_modelo_no_tiene_precio PASSED [ 34%]
+tests/test_costos.py::test_fusionar_suma_tokens_por_modelo PASSED        [ 36%]
+tests/test_herramientas.py::test_buscar_en_politicas_encuentra_el_dato_sin_tildes PASSED [ 38%]
+tests/test_herramientas.py::test_buscar_en_politicas_avisa_si_no_hay_resultados PASSED [ 40%]
+tests/test_herramientas.py::test_calculadora_resuelve_la_cuenta_de_vacaciones PASSED [ 42%]
+tests/test_herramientas.py::test_calculadora_rechaza_codigo_arbitrario PASSED [ 44%]
+tests/test_herramientas.py::test_calculadora_rechaza_exponentes_gigantes PASSED [ 46%]
+tests/test_herramientas.py::test_estadisticas_resume_la_lista PASSED     [ 48%]
+tests/test_herramientas.py::test_estadisticas_lista_vacia_devuelve_error PASSED [ 51%]
+tests/test_hitl_graph.py::test_estado_hereda_messages_y_campos_propios PASSED [ 53%]
+tests/test_hitl_graph.py::test_topologia_con_gate_de_aprobacion PASSED   [ 55%]
+tests/test_hitl_graph.py::test_enrutar_desde_supervisor PASSED           [ 57%]
+tests/test_hitl_graph.py::test_grafo_se_pausa_antes_del_analista PASSED  [ 59%]
+tests/test_hitl_graph.py::test_reanudar_aprobando_corre_el_analista_y_sintetiza PASSED [ 61%]
+tests/test_hitl_graph.py::test_reanudar_rechazando_cierra_sin_analista PASSED [ 63%]
+tests/test_hitl_graph.py::test_enrutar_aprobacion_sin_aprobar_va_a_sintesis PASSED [ 65%]
+tests/test_hitl_graph.py::test_se_aprueba_una_sola_vez PASSED            [ 67%]
+tests/test_hitl_graph.py::test_guarda_no_cierra_sin_contribuciones PASSED [ 69%]
+tests/test_hitl_graph.py::test_guarda_fuerza_analista_si_falta_calculo PASSED [ 71%]
+tests/test_hitl_graph.py::test_max_pasos_es_tope_duro PASSED             [ 73%]
+tests/test_jobs.py::test_crear_arranca_en_pending PASSED                 [ 75%]
+tests/test_jobs.py::test_existe_detecta_el_job PASSED                    [ 77%]
+tests/test_jobs.py::test_transiciones_running_awaiting_done PASSED       [ 79%]
+tests/test_jobs.py::test_marcar_failed_guarda_el_error PASSED            [ 81%]
+tests/test_jobs.py::test_obtener_inexistente_levanta_keyerror PASSED     [ 83%]
+tests/test_jobs.py::test_ttl_se_aplica_en_cada_escritura PASSED          [ 85%]
+tests/test_jobs.py::test_sumar_costo_acumula_a_traves_de_varias_corridas PASSED [ 87%]
+tests/test_jobs.py::test_sumar_costo_vacio_no_crea_costo PASSED          [ 89%]
+tests/test_jobs.py::test_costo_sobrevive_al_marcar_done PASSED           [ 91%]
+tests/test_worker.py::test_excepcion_en_background_deja_el_job_en_failed PASSED [ 93%]
+tests/test_worker.py::test_interrupt_en_background_deja_el_job_en_awaiting PASSED [ 95%]
+tests/test_worker.py::test_reanudar_y_terminar_deja_el_job_en_done PASSED [ 97%]
+tests/test_worker.py::test_worker_registra_el_costo_desde_el_callback PASSED [100%]
+
+============================= 49 passed in 0.55s ==============================

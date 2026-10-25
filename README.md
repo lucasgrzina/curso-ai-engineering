@@ -19,8 +19,8 @@ verificación.
 | [3](./entregable3) | Módulo 3 · Persistencia y vector DBs | Sistema de recuperación semántica local (RAG): ChromaDB, embeddings locales (HuggingFace), cadena LCEL con `PydanticOutputParser` y prueba anti-alucinación | ✅ Completo |
 | [4](./entregable4) | Módulo 4 · Escalabilidad documental | RAG escalable en la nube: Pinecone Serverless, recuperador híbrido (BM25 + vectorial con RRF) y evaluación con Precision@k / Recall@k | ✅ Completo |
 | [5](./entregable5) | Módulo 5 · Razonamiento autónomo | Agente ReAct cíclico con LangGraph: herramientas `@tool`, `tools_condition`, memoria persistente con SQLite (`thread_id`) y traza de ejecución | ✅ Completo |
-| 6 | Módulo 6 · Sistemas multi-agente | Orquestador multi-agente especializado | ⏳ Pendiente |
-| 7 | Módulo 7 · Producción y robustez | Observabilidad, costos y despliegue | ⏳ Pendiente |
+| [6](./entregable6) | Módulo 6 · Sistemas multi-agente | Orquestador multi-agente *hub-and-spoke*: Supervisor (router + validador con guardas anti "supervisor infinito"), Investigador y Analista con herramientas acotadas, síntesis final | ✅ Completo |
+| [7](./entregable7) | Módulo 7 · Producción y robustez | API FastAPI asíncrona del orquestador: estado y checkpoints en Redis, observabilidad (Phoenix), **costo por ejecución en USD**, Human-in-the-loop y **suite de tests con pytest** | ✅ Completo |
 | 8 | Módulo 8 · Capstone | Entrega final | ⏳ Pendiente |
 
 ## Ejercicio 1 — Orquestador Concurrente de Modelos
@@ -150,3 +150,47 @@ python verificar.py           # criterios de aceptación (offline por defecto)
 ```
 
 Detalle completo en [`entregable5/README.md`](./entregable5/README.md).
+
+## Entregable 6 — Orquestador Multi-Agente Especializado
+
+Sistema **multi-agente** *hub-and-spoke* con **LangGraph**: un **Supervisor** (LLM
+con salida estructurada) enruta cada consulta entre dos especialistas con
+herramientas acotadas (mínimo privilegio) —**Investigador** (busca en las
+políticas internas, no calcula) y **Analista** (calcula, no busca)—, valida sus
+aportes con una rúbrica y cierra con un nodo de **síntesis**. Tres defensas
+anti "Supervisor Infinito" viven en código (`MAX_PASOS`, `MAX_REFINAMIENTOS` y la
+rúbrica de suficiencia), así el LLM decide pero no puede saltarse los topes.
+
+```bash
+cd entregable6
+uv venv --python 3.12 && uv pip install -r requirements.txt
+cp .env.example .env          # API key de UN proveedor (gemini / openai / anthropic)
+python verificar.py           # criterios de aceptación (offline, sin API key)
+python main.py                # demo real: 2 escenarios + evidencia/
+```
+
+Detalle completo en [`entregable6/README.md`](./entregable6/README.md).
+
+## Entregable 7 — API de Producción y Monitoreo Activo
+
+Expone el orquestador del Entregable 6 detrás de una **API REST FastAPI
+asíncrona**: `POST /tasks` encola y devuelve `job_id` sin bloquear el event loop
+(trabajo pesado en `BackgroundTasks`), el estado del job y los *checkpoints* de
+LangGraph viven en **Redis**, cada nodo se instrumenta en **Arize Phoenix**, un
+nodo **Human-in-the-loop** pausa antes de la acción crítica (`POST /approve`) y el
+**costo por ejecución en USD** se calcula a partir de los tokens (`app/costos.py`),
+no solo la latencia. La validación es una **suite de tests con pytest** (49 casos:
+endpoints, máquina de estados, HITL, costos) integrada en **CI** (GitHub Actions).
+
+```bash
+cd entregable7
+cp .env.example .env          # API key de UN proveedor
+docker compose up --build     # API (:8000) + Redis Stack (:6379) + Phoenix (:6006)
+
+# Tests automatizados (offline, sin Redis ni API keys):
+uv pip install -r requirements-dev.txt
+pytest                        # 49 tests
+python verificar.py           # chequeos deterministas (evidencia reproducible)
+```
+
+Detalle completo en [`entregable7/README.md`](./entregable7/README.md).

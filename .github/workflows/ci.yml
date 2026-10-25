@@ -1,0 +1,44 @@
+name: CI
+
+# Suite de tests automatizados del Entregable 7 (API multi-agente).
+# Corre pytest en cada push / PR, 100% offline: sin Redis, sin Phoenix y sin
+# API keys (OBSERVABILITY=none y dobles deterministas en los tests).
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "entregable7/**"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    paths:
+      - "entregable7/**"
+      - ".github/workflows/ci.yml"
+
+jobs:
+  tests-entregable7:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: entregable7
+    env:
+      OBSERVABILITY: none
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Correr la suite de pytest
+        run: pytest -v
+
+      - name: Chequeos deterministas (verificar.py)
+        run: python verificar.py
