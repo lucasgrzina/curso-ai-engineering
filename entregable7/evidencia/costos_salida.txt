@@ -1,0 +1,33 @@
+EVIDENCIA DE COSTO EN USD - calculado a partir de los tokens (app/costos.py)
+==============================================================================
+Tokens de la corrida (de evidencia/observabilidad_phoenix.txt):
+  modelo              : openai/gpt-oss-20b (Groq)
+  input_tokens        : 41113
+  output_tokens       : 18601
+  total_tokens        : 59714
+
+Precio aplicado (tabla PRECIOS_USD_POR_1M): USD 0.1/1M in, USD 0.5/1M out
+Fuente del precio    : tabla
+COSTO POR EJECUCION  : USD 0.013412
+
+Antes Phoenix mostraba los tokens de Groq SIN costo en USD; ahora el costo en
+dolares se calcula desde los tokens y se expone en GET /tasks/{id}.costo.
+
+Detalle JSON (lo que devuelve GET /tasks/{id}.costo):
+{
+  "input_tokens": 41113,
+  "output_tokens": 18601,
+  "total_tokens": 59714,
+  "costo_usd": 0.013412,
+  "moneda": "USD",
+  "precio_fuente": "tabla",
+  "modelos": {
+    "openai/gpt-oss-20b": {
+      "input_tokens": 41113,
+      "output_tokens": 18601,
+      "total_tokens": 59714,
+      "costo_usd": 0.013412,
+      "precio_fuente": "tabla"
+    }
+  }
+}

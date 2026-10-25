@@ -18,7 +18,7 @@ import uuid
 from contextlib import asynccontextmanager
 
 import redis as redis_lib
-from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException
 
 from app import config
 from app.graph import get_app
@@ -41,6 +41,17 @@ logger = logging.getLogger("api")
 # usa su propia conexión dentro de RedisSaver.
 _redis = redis_lib.from_url(config.REDIS_URL)
 store = JobStore(_redis, ttl=config.JOB_TTL)
+
+
+# Dependencias inyectables: los endpoints piden el JobStore y el grafo a través de
+# estas funciones, así los tests pueden sobreescribirlas con dobles en memoria
+# (app.dependency_overrides) sin necesitar Redis ni un LLM real.
+def get_store() -> JobStore:
+    return store
+
+
+def get_graph():
+    return get_app()
 
 
 @asynccontextmanager
@@ -72,16 +83,21 @@ async def health() -> dict:
 
 
 @app.post("/tasks", response_model=TareaCreada, status_code=202)
-async def crear_tarea(body: CrearTarea, background: BackgroundTasks) -> TareaCreada:
+async def crear_tarea(
+    body: CrearTarea,
+    background: BackgroundTasks,
+    store: JobStore = Depends(get_store),
+    grafo=Depends(get_graph),
+) -> TareaCreada:
     """Encola la tarea y devuelve el job_id de inmediato (patrón async)."""
     job_id = uuid.uuid4().hex
     store.crear(job_id, body.pregunta)
-    background.add_task(ejecutar_tarea, store, get_app(), job_id, body.pregunta)
+    background.add_task(ejecutar_tarea, store, grafo, job_id, body.pregunta)
     return TareaCreada(job_id=job_id, estado=Estado.PENDING.value)
 
 
 @app.get("/tasks/{job_id}", response_model=EstadoTarea)
-async def estado_tarea(job_id: str) -> EstadoTarea:
+async def estado_tarea(job_id: str, store: JobStore = Depends(get_store)) -> EstadoTarea:
     """Devuelve el estado actual del job (solo lee Redis; no bloquea)."""
     try:
         job = store.obtener(job_id)
@@ -94,11 +110,18 @@ async def estado_tarea(job_id: str) -> EstadoTarea:
         resultado=job.resultado,
         error=job.error,
         aprobacion=job.aprobacion,
+        costo=job.costo,
     )
 
 
 @app.post("/tasks/{job_id}/approve", response_model=RespuestaAprobacion)
-async def aprobar_tarea(job_id: str, body: Aprobacion, background: BackgroundTasks) -> RespuestaAprobacion:
+async def aprobar_tarea(
+    job_id: str,
+    body: Aprobacion,
+    background: BackgroundTasks,
+    store: JobStore = Depends(get_store),
+    grafo=Depends(get_graph),
+) -> RespuestaAprobacion:
     """Resuelve la pausa HITL: reanuda el grafo (aprobado) o lo cierra (rechazado)."""
     try:
         job = store.obtener(job_id)
@@ -113,7 +136,7 @@ async def aprobar_tarea(job_id: str, body: Aprobacion, background: BackgroundTas
             detail=f"El job está {job.estado.value}, no esperando aprobación.",
         )
 
-    background.add_task(reanudar_tarea, store, get_app(), job_id, body.aprobado, body.comentario)
+    background.add_task(reanudar_tarea, store, grafo, job_id, body.aprobado, body.comentario)
     decision = "aprobada" if body.aprobado else "rechazada"
     return RespuestaAprobacion(
         job_id=job_id,

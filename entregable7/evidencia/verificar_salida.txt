@@ -1,8 +1,8 @@
 [w-fail] falló la ejecución.
 Traceback (most recent call last):
-  File "C:\laragon\www\ia\curso\entregable7\app\worker.py", line 60, in ejecutar_tarea
-    resultado = app.invoke(estado_inicial(pregunta), config=_config_hilo(job_id))
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\entregable7\app\worker.py", line 65, in ejecutar_tarea
+    resultado = app.invoke(estado_inicial(pregunta), config=_config_hilo(job_id, [uso]))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\laragon\www\ia\curso\entregable7\verificar.py", line 228, in <lambda>
     app_boom = SimpleNamespace(invoke=lambda *a, **k: (_ for _ in ()).throw(RuntimeError("falla del agente")))
                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

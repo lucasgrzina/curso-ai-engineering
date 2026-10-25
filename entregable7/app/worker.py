@@ -15,6 +15,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from langchain_core.callbacks import UsageMetadataCallbackHandler
 from langgraph.types import Command
 
 from app.agents._base import extraer_texto
@@ -24,8 +25,11 @@ from app.state import estado_inicial
 logger = logging.getLogger("worker")
 
 
-def _config_hilo(job_id: str) -> dict:
-    return {"configurable": {"thread_id": job_id}}
+def _config_hilo(job_id: str, callbacks: list | None = None) -> dict:
+    cfg: dict = {"configurable": {"thread_id": job_id}}
+    if callbacks:
+        cfg["callbacks"] = callbacks
+    return cfg
 
 
 def _resumen(resultado: dict) -> dict[str, Any]:
@@ -57,7 +61,9 @@ def ejecutar_tarea(store: JobStore, app, job_id: str, pregunta: str) -> None:
     """Corre el grafo desde cero para `pregunta`. Maneja pausa HITL y errores."""
     try:
         store.marcar_running(job_id)
-        resultado = app.invoke(estado_inicial(pregunta), config=_config_hilo(job_id))
+        uso = UsageMetadataCallbackHandler()  # acumula tokens de TODAS las llamadas al LLM
+        resultado = app.invoke(estado_inicial(pregunta), config=_config_hilo(job_id, [uso]))
+        store.sumar_costo(job_id, uso.usage_metadata)
         _procesar(store, job_id, resultado)
     except Exception as e:  # noqa: BLE001 - el fallo en background debe verse como FAILED
         logger.exception("[%s] falló la ejecución.", job_id)
@@ -68,10 +74,12 @@ def reanudar_tarea(store: JobStore, app, job_id: str, aprobado: bool, comentario
     """Reanuda un grafo pausado en el HITL con la decisión humana."""
     try:
         store.marcar_running(job_id)
+        uso = UsageMetadataCallbackHandler()
         resultado = app.invoke(
             Command(resume={"aprobado": aprobado, "comentario": comentario}),
-            config=_config_hilo(job_id),
+            config=_config_hilo(job_id, [uso]),
         )
+        store.sumar_costo(job_id, uso.usage_metadata)  # suma al costo ya acumulado antes de la pausa
         _procesar(store, job_id, resultado)
     except Exception as e:  # noqa: BLE001
         logger.exception("[%s] falló la reanudación.", job_id)
