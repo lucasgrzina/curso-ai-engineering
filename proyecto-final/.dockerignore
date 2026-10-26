@@ -1,0 +1,15 @@
+.venv/
+vectorstore/
+.hf_cache/
+.chroma/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+screenshots/
+evidencia/
+.phoenix/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

@@ -1,0 +1,33 @@
+=== Evidencia de recuperacion RAG real (ChromaDB + all-MiniLM-L6-v2) ===
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4388.60it/s]
+Indice: coleccion techcorp_politicas con 4 fragmentos indexados.
+
+CONSULTA: dias de vacaciones por antiguedad
+[Fuente: politica_vacaciones.txt] Política de Vacaciones - TechCorp
+
+Esta política regula el otorgamiento de días de vacaciones anuales para todos los
+empleados en relación de dependencia de TechCorp, y se aplica de forma escalonada
+según la antigüedad del emp ...
+------------------------------------------------------------------------
+CONSULTA: cada cuanto se renueva la contrasena
+[Fuente: politica_seguridad_informatica.txt] Política de Seguridad Informática - TechCorp
+
+Esta política establece los controles mínimos de seguridad que todos los empleados y
+colaboradores de TechCorp deben cumplir al utilizar los sistemas y la información de ...
+------------------------------------------------------------------------
+CONSULTA: esquema de teletrabajo
+[Fuente: politica_teletrabajo.txt] Política de Teletrabajo - TechCorp
+
+TechCorp adopta un esquema de trabajo híbrido para la mayoría de sus roles, buscando
+equilibrar la flexibilidad del trabajo remoto con la colaboración presencial.
+
+El esquema estándar es de ...
+------------------------------------------------------------------------
+CONSULTA: cuanto dura el onboarding
+[Fuente: onboarding_nuevos_empleados.txt] Proceso de Onboarding de Nuevos Empleados - TechCorp
+
+El proceso de onboarding de TechCorp tiene una duración total de 4 semanas y busca que
+cada nueva persona alcance autonomía en su rol de forma ordenada.
+
+Semana 1 - ...
+------------------------------------------------------------------------

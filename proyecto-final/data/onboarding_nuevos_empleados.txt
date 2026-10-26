@@ -1,0 +1,20 @@
+Proceso de Onboarding de Nuevos Empleados - TechCorp
+
+El proceso de onboarding de TechCorp tiene una duración total de 4 semanas y busca que
+cada nueva persona alcance autonomía en su rol de forma ordenada.
+
+Semana 1 - Inducción general: presentación de la empresa, su cultura y sus valores.
+Entrega del equipamiento (notebook corporativa), alta en los sistemas y configuración del
+2FA. Lectura y aceptación de las políticas internas, incluidas las de seguridad
+informática, teletrabajo y vacaciones.
+
+Semanas 2 y 3 - Capacitación del rol: formación técnica específica según el puesto,
+acompañamiento de un mentor asignado y primeras tareas supervisadas. Se definen los
+objetivos del período de prueba junto con el líder del equipo.
+
+Semana 4 - Cierre con Recursos Humanos: revisión del recorrido, resolución de dudas
+administrativas (obra social, beneficios, estipendio de conectividad) y confirmación de
+que todos los accesos y herramientas funcionan correctamente.
+
+El período de prueba es de 3 meses. Durante ese lapso se realizan dos reuniones de
+feedback formales: una al mes y otra al cierre del período.
