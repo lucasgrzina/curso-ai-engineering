@@ -1,0 +1,20 @@
+Política de Seguridad Informática - TechCorp
+
+Esta política establece los controles mínimos de seguridad que todos los empleados y
+colaboradores de TechCorp deben cumplir al utilizar los sistemas y la información de la
+empresa.
+
+Gestión de contraseñas: las contraseñas de los sistemas internos deben renovarse cada 90
+días. Deben tener un mínimo de 12 caracteres e incluir mayúsculas, minúsculas, números y
+símbolos. No se permite reutilizar las últimas 5 contraseñas.
+
+Autenticación: el segundo factor de autenticación (2FA) es obligatorio en todos los
+sistemas internos, incluidos el correo corporativo, el repositorio de código y las
+consolas de administración en la nube.
+
+Clasificación de la información: la información se clasifica en pública, interna,
+confidencial y restringida. La información confidencial y restringida no puede
+almacenarse en dispositivos personales ni enviarse a cuentas de correo externas.
+
+Incidentes: todo incidente de seguridad (pérdida de un dispositivo, sospecha de phishing,
+acceso no autorizado) debe reportarse al equipo de Seguridad dentro de las 24 horas.

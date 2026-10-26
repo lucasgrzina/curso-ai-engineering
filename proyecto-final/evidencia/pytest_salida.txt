@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\laragon\www\ia\curso\proyecto-final
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1, langsmith-0.14.11
+collected 50 items
+
+tests\test_api.py .........                                              [ 18%]
+tests\test_costos.py .........                                           [ 36%]
+tests\test_herramientas.py .....                                         [ 46%]
+tests\test_hitl_graph.py ...........                                     [ 68%]
+tests\test_jobs.py .........                                             [ 86%]
+tests\test_rag.py ...                                                    [ 92%]
+tests\test_worker.py ....                                                [100%]
+
+============================= 50 passed in 1.25s ==============================

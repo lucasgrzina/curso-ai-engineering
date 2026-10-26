@@ -1,0 +1,86 @@
+[w-fail] falló la ejecución.
+Traceback (most recent call last):
+  File "C:\laragon\www\ia\curso\proyecto-final\app\worker.py", line 69, in ejecutar_tarea
+    resultado = await app.ainvoke(estado_inicial(pregunta), config=_config_hilo(job_id, [uso]))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\proyecto-final\verificar.py", line 95, in ainvoke
+    return fn(*a, **k)
+           ^^^^^^^^^^^
+  File "C:\laragon\www\ia\curso\proyecto-final\verificar.py", line 276, in _boom
+    raise RuntimeError("falla del agente")
+RuntimeError: falla del agente
+
+1. Estado compartido (M6 + campo HITL)
+--------------------------------------
+  [OK ] hereda MessagesState (campo messages)
+  [OK ] campo propio 'next_agent'
+  [OK ] campo propio 'contribuciones'
+  [OK ] campo propio 'pasos'
+  [OK ] campo propio 'task_completed'
+  [OK ] campo propio 'aprobacion_analista'
+
+2. Topología del grafo (gate HITL entre supervisor y analista)
+--------------------------------------------------------------
+  [OK ] nodos: supervisor + 2 especialistas + aprobacion + síntesis - ['analista', 'aprobacion', 'investigador', 'sintesis', 'supervisor']
+  [OK ] los especialistas vuelven SIEMPRE al supervisor
+  [OK ] el supervisor NO va directo al analista (pasa por el gate)
+  [OK ] el gate de aprobación habilita al analista
+  [OK ] los especialistas no se hablan entre sí
+  [OK ] enrutar(analista) -> aprobacion
+  [OK ] enrutar(FINISH) -> sintesis
+
+3. HITL: el grafo se PAUSA antes del analista
+---------------------------------------------
+  [OK ] invoke devuelve una interrupción (grafo pausado) - ['messages', 'next_agent', 'instruccion', 'razon', 'contribuciones', 'pasos', 'task_completed', 'motivo_fin', 'aprobacion_analista', '__interrupt__']
+  [OK ] hay nodo pendiente mientras espera aprobación
+  [OK ] la interrupción explica que requiere aprobación - {'tipo': 'aprobacion_requerida', 'agente': 'analista', 'instruccion': 'x', 'motivo': 'El analista ejecutará una herramienta de cálculo (acción crítica con costo). Se requiere aprobación humana antes de continuar.'}
+
+4. HITL: reanudar APROBANDO corre el analista y llega a síntesis
+----------------------------------------------------------------
+  [OK ] tras aprobar, el analista interviene - ['analista']
+  [OK ] la aprobación quedó registrada en el estado
+  [OK ] la síntesis final se emite
+
+5. HITL: reanudar RECHAZANDO cierra sin ejecutar el analista
+------------------------------------------------------------
+  [OK ] tras rechazar, el analista NO interviene - []
+  [OK ] motivo_fin = rechazada_por_humano
+  [OK ] la síntesis avisa del corte (prompt con ATENCIÓN)
+  [OK ] enrutar_aprobacion sin aprobación -> sintesis
+
+6. HITL: se aprueba UNA sola vez (un refinamiento no vuelve a pausar)
+---------------------------------------------------------------------
+  [OK ] tras una aprobación el grafo NO vuelve a pausar - ['messages', 'next_agent', 'instruccion', 'razon', 'contribuciones', 'pasos', 'task_completed', 'motivo_fin', 'aprobacion_analista']
+  [OK ] el analista pudo refinar sin segunda aprobación - 2 corridas
+
+7. Anti 'Supervisor Infinito' (guardas del M6 intactas)
+-------------------------------------------------------
+  [OK ] no se puede cerrar sin contribuciones
+  [OK ] no se cierra si falta cálculo y el analista no intervino
+  [OK ] MAX_PASOS es un tope duro - pasos=3, motivo=limite_pasos
+
+8. JobStore sobre Redis (máquina de estados, con fake en memoria)
+-----------------------------------------------------------------
+  [OK ] crear -> PENDING
+  [OK ] existe() detecta el job
+  [OK ] marcar_running -> RUNNING
+  [OK ] marcar_awaiting -> AWAITING_APPROVAL + payload
+  [OK ] marcar_done -> DONE + resultado
+  [OK ] marcar_failed -> FAILED + error
+  [OK ] obtener() de un id inexistente levanta KeyError
+
+9. Worker: captura de errores y pausa (sin tocar un LLM real)
+-------------------------------------------------------------
+  [OK ] una excepción en background deja el job en FAILED
+  [OK ] un interrupt en background deja el job en AWAITING_APPROVAL
+  [OK ] reanudar y terminar deja el job en DONE con respuesta
+
+10. RAG real (tool del investigador) y herramientas de cálculo
+--------------------------------------------------------------
+  [OK ] RAG recupera el fragmento de vacaciones con su fuente - [Fuente: politica_vacaciones.txt] Politica de vacaciones: menos de 5 anios 14 di
+  [OK ] calculadora: 5*14+5*21+2*28 = 231
+  [OK ] calculadora rechaza código arbitrario
+  [OK ] calculadora rechaza exponentes gigantes
+  [OK ] estadisticas
+
+TODOS LOS CHEQUEOS OK

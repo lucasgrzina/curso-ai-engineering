@@ -1,0 +1,22 @@
+Política de Vacaciones - TechCorp
+
+Esta política regula el otorgamiento de días de vacaciones anuales para todos los
+empleados en relación de dependencia de TechCorp, y se aplica de forma escalonada
+según la antigüedad del empleado en la empresa.
+
+Tramos de vacaciones por antigüedad:
+
+- Empleados con menos de 5 años de antigüedad: 14 días corridos de vacaciones por año.
+- Empleados con una antigüedad de entre 5 y 10 años (inclusive): 21 días corridos por año.
+- Empleados con más de 10 años de antigüedad: 28 días corridos por año.
+
+El cálculo del total acumulado de vacaciones se realiza sumando los días que
+corresponden a cada tramo por los años efectivamente trabajados dentro de ese tramo.
+Por ejemplo, un empleado con 12 años de antigüedad acumula: los primeros 5 años a 14
+días, los siguientes 5 años a 21 días, y los últimos 2 años a 28 días.
+
+Los días de vacaciones se cuentan como días corridos e incluyen fines de semana. El
+período de vacaciones debe ser aprobado por el supervisor directo con al menos 30 días
+de anticipación. Los días no gozados dentro del año calendario pueden trasladarse como
+máximo hasta el 31 de marzo del año siguiente, salvo excepciones autorizadas por
+Recursos Humanos.

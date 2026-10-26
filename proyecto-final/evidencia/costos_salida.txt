@@ -1,0 +1,10 @@
+=== Evidencia de costo por ejecucion en USD (calculado desde los tokens) ===
+Corrida: 5 peticiones concurrentes (prueba_carga.py --n 5) con Groq openai/gpt-oss-20b.
+Resultado: 2/5 DONE; 3 FAILED por 429 (rate limit del tier gratuito de Groq bajo
+concurrencia) -> el worker las paso correctamente a FAILED (no quedan en loop).
+
+job 9f47a33e  estado=DONE  agentes=['investigador', 'analista']
+  tokens: in=4805 out=2163 total=6968  ->  costo_usd=0.001562 (tabla)
+
+job 8f70942d  estado=DONE  agentes=['investigador', 'analista']
+  tokens: in=5001 out=1474 total=6475  ->  costo_usd=0.001237 (tabla)
